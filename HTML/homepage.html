@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>The Collective | Homepage</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <link rel="icon" href="../Images/logo1.png">
+  <style>
+    :root {
+  --deep-teal: #264653;
+  --teal: #2a9d8f;
+  --sand: #e9c46a;
+  --orange: #f4a261;
+  --rust: #e76f51;
+  --light-teal: rgba(42, 157, 143, 0.1);
+  --gradient-primary: linear-gradient(135deg, var(--teal) 0%, var(--deep-teal) 100%);
+}
+
+/* Top Header */
+.top-header {
+  background: var(--gradient-primary);
+  color: #fff;
+  padding: 12px 20px;
+  font-size: 0.95rem;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+.social-icons a i {
+  color: #fff;
+  font-size: 1.1rem;
+  margin-right: 10px;
+  transition: color 0.3s ease;
+}
+.social-icons a i:hover {
+  color: var(--sand);
+}
+.account-section i {
+  margin-right: 5px;
+}
+
+/* Middle Header */
+.middle-header {
+  background-color: #fff;
+  border-bottom: 1px solid #ddd;
+}
+.icon-btn {
+  color: var(--deep-teal);
+  margin-left: 15px;
+  text-decoration: none;
+  font-size: 1.3rem;
+  transition: transform 0.3s ease, color 0.3s ease;
+}
+.icon-btn:hover {
+  color: var(--teal);
+  transform: scale(1.1);
+}
+.brand-logo img {
+  height: 45px;
+}
+
+/* Search Box */
+#search-box {
+  display: none;
+  position: absolute;
+  top: 36px;
+  left: 0;
+  width: 220px;
+  padding: 8px 12px;
+  border: 1px solid var(--teal);
+  border-radius: 8px;
+  outline: none;
+  background-color: #fff;
+  color: var(--deep-teal);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  z-index: 10;
+}
+
+/* Cart Count */
+.cart-count-badge {
+  position: absolute;
+  top: -6px;
+  right: -10px;
+  background-color: var(--rust);
+  color: white;
+  font-size: 12px;
+  padding: 2px 6px;
+  border-radius: 50%;
+  font-weight: bold;
+}
+
+/* Navigation */
+.nav-header {
+  background-color: var(--light-teal);
+}
+.nav-header .nav-link {
+  padding: 0.5rem 1rem;
+  font-weight: 500;
+  color: var(--deep-teal);
+  transition: color 0.3s ease;
+}
+.nav-header .nav-link:hover {
+  color: var(--rust);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  #search-box {
+    width: 180px;
+  }
+  .middle-header, .top-header {
+    flex-direction: column;
+    text-align: center;
+  }
+}
+
+    .slider-container {
+      height: 500px;
+      position: relative;
+      overflow: hidden;
+    }
+    .slide {
+      background-size: cover;
+      background-position: center;
+      height: 100%;
+      width: 100%;
+      position: absolute;
+      opacity: 0;
+      transition: opacity 0.5s ease-in-out;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .slide.active {
+      opacity: 1;
+      z-index: 1;
+    }
+    .slide-content {
+      background: rgba(0, 0, 0, 0.5);
+      padding: 30px;
+      border-radius: 10px;
+    }
+    .shop-btn {
+      margin-top: 15px;
+      font-weight: bold;
+    }
+    .prev, .next {
+      z-index: 2;
+    }
+    .content-slider-container {
+      position: relative;
+      overflow: hidden;
+      height: 400px;
+    }
+    .content-slide {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      opacity: 0;
+      transition: opacity 0.5s ease-in-out;
+      padding: 20px 0;
+    }
+    .content-slide.active {
+      opacity: 1;
+      position: relative;
+      z-index: 1;
+    }
+    .content-slider-container .btn {
+      margin-top: 10px;
+    }
+    .content-prev,
+    .content-next {
+      z-index: 2;
+      font-size: 1.5rem;
+      padding: 8px 15px;
+    }
+    .carousel-container {
+      display: flex;
+      transition: transform 0.6s ease-in-out;
+    }
+    .carousel-slide {
+      min-width: 100%;
+      position: relative;
+      display: none;
+      justify-content: center;
+      align-items: center;
+    }
+    .carousel-slide.active {
+      display: flex;
+    }
+    .carousel-slide img {
+      width: 100%;
+      height: 600px;
+      object-fit: cover;
+      filter: brightness(0.5);
+    }
+    .carousel-caption {
+      position: absolute;
+      color: #008080;
+      text-align: center;
+      z-index: 10;
+    }
+    .carousel-caption h1 {
+      font-size: 3rem;
+      margin-bottom: 10px;
+    }
+    .carousel-caption p {
+      font-size: 1.2rem;
+      margin-bottom: 20px;
+    }
+    .carousel-controls {
+      position: absolute;
+      top: 50%;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      z-index: 20;
+      padding: 0 20px;
+      transform: translateY(-50%);
+    }
+    .carousel-controls span {
+      font-size: 2rem;
+      color: white;
+      cursor: pointer;
+    }
+
+    /* Category Carousel Styling */
+    .category-carousel {
+      padding: 50px 0;
+      text-align: center;
+      background-color: #f9f9f9;
+    }
+    
+    .category-carousel h2 {
+      margin-bottom: 30px;
+      font-weight: 600;
+      color: #333;
+    }
+    
+    .category-container {
+      position: relative;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 50px;
+    }
+    
+    .category-track {
+      display: flex;
+      overflow-x: hidden;
+      scroll-behavior: smooth;
+      gap: 30px;
+      padding: 10px 0;
+      scroll-behavior: smooth;
+      scrollbar-width: none;
+    }
+
+    .category-track::-webkit-scrollbar {
+  display: none; /* Hide scrollbar for Chrome, Safari */
+}
+    
+    .category {
+      flex: 0 0 auto;
+      width: 140px;
+      margin: 10px;
+      text-align: center;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+    
+    .category img {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      border: 2px solid #333;
+      object-fit: cover;
+      transition: all 0.3s ease;
+    }
+    
+    .category:hover img {
+      transform: scale(1.05);
+      border-color: #4ca1af;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+    
+    .category span {
+      display: block;
+      margin-top: 10px;
+      font-weight: 500;
+      color: #333;
+    }
+    
+    .category-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 40px;
+      height: 40px;
+      background: #fff;
+      border: 2px solid #333;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 18px;
+      z-index: 5;
+      transition: all 0.3s ease;
+    }
+    
+    .category-btn:hover {
+      background: #333;
+      color: #fff;
+    }
+    
+    .category-btn.left {
+      left: 0;
+    }
+    
+    .category-btn.right {
+      right: 0;
+    }
+
+    .footer {
+  background-color: #f8f9fa;
+  padding: 60px 0 30px;
+  color: #333;
+  border-top: 1px solid #e9ecef;
+}
+
+.footer h5 {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 20px;
+  position: relative;
+}
+
+.footer-logo h4 {
+  font-weight: bold;
+  margin-bottom: 0;
+}
+
+.tagline {
+  font-size: 12px;
+  color: #6c757d;
+}
+
+.about-text, .contact-info p {
+  font-size: 14px;
+  line-height: 1.6;
+  color: #6c757d;
+}
+
+.footer-links {
+  list-style: none;
+  padding-left: 0;
+}
+
+.footer-links li {
+  margin-bottom: 10px;
+}
+
+.footer-links a {
+  color: #6c757d;
+  text-decoration: none;
+  font-size: 14px;
+  transition: color 0.3s;
+}
+
+.footer-links a:hover {
+  color: #343a40;
+  text-decoration: none;
+}
+
+.form-control {
+  border-radius: 4px;
+  background-color: #fff;
+  border: 1px solid #ced4da;
+  padding: 10px;
+  font-size: 14px;
+}
+
+.btn-subscribe {
+  width: 100%;
+  border-radius: 4px;
+  padding: 8px;
+  background-color: #343a40;
+  color: white;
+  transition: background-color 0.3s;
+}
+
+.btn-subscribe:hover {
+  background-color: #212529;
+}
+
+.footer-divider {
+  margin: 30px 0;
+  border-top: 1px solid #e9ecef;
+}
+
+.social-divider {
+  margin: 15px 0;
+  border-top: 1px solid #858484; 
+  opacity: 0.8;  
+}
+
+.footer-bottom {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.copyright {
+  font-size: 12px;
+  color: #6c757d;
+  margin-bottom: 0;
+}
+
+.social-section {
+  margin-top: 20px;
+}
+
+.social-links {
+  display: flex;
+  gap: 10px;
+}
+
+.social-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  background-color: #fff;
+  border-radius: 50%;
+  color: #343a40;
+  border: 1px solid #dee2e6;
+  transition: all 0.3s;
+}
+
+.social-icon:hover {
+  background-color: #343a40;
+  color: #fff;
+}
+
+  .back-to-top {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: #2c3e50;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    z-index: 1000;
+  }
+  
+  .back-to-top.visible {
+    opacity: 1;
+    visibility: visible;
+  }
+  
+  .back-to-top:hover {
+    background-color: #4ca1af;
+    transform: translateY(-5px);
+  }
+
+  .background-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('../Images/mainbanner.jpg'); /* Replace with your image path */
+  background-size: cover;
+  background-position: center;
+  opacity: 0.3; /* Controls translucency */
+  z-index: -1;  /* Places it behind content */
+}
+:root {
+  --deep-teal: #264653;
+  --teal: #2a9d8f;
+  --sand: #e9c46a;
+  --orange: #f4a261;
+  --rust: #e76f51;
+  --light-teal: rgba(42, 157, 143, 0.1);
+  --gradient-primary: linear-gradient(135deg, var(--teal) 0%, var(--deep-teal) 100%);
+}
+
+/* .btn-login, .btn-signup {
+  background-color: var(--teal);
+  color: #fff;
+  border: none;
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  transition: background-color 0.3s ease;
+}
+.btn-login:hover, .btn-signup:hover {
+  background-color: var(--deep-teal);
+} */
+.btn-auth {
+  background: var(--teal);
+  color: white;
+  padding: 4px 10px;
+  border-radius: 4px;
+  text-decoration: none;
+  font-size: 0.85rem;
+  margin-left: 8px;
+  transition: all 0.3s ease;
+  border: 1px solid transparent;
+}
+
+.btn-auth:hover {
+  background: var(--deep-teal);
+  color: #fff;
+  border: 1px solid var(--sand);
+}
+
+.search-box {
+  display: none;
+  position: absolute;
+  right: 20px;
+  top: -15px;
+  padding: 5px 8px;
+  border: 1px solid var(--teal);
+  border-radius: 7px;
+  font-size: 0.9rem;
+  outline: none;
+  width: 180px;
+  background: #fff;
+  transition: all 0.3s ease;
+  z-index: 10;
+}
+.search-box.active {
+  display: block;
+}
+
+.cart-badge {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background: var(--rust);
+  color: white;
+  font-size: 0.65rem;
+  padding: 2px 6px;
+  border-radius: 50%;
+}
+
+
+  </style>
+</head>
+<body>
+
+<div class="background-overlay"></div>
+
+<div class="top-header d-flex justify-content-between align-items-center px-4">
+  <div class="social-icons">
+    <a href="#"><i class="fab fa-facebook-f"></i></a>
+    <a href="#"><i class="fab fa-twitter"></i></a>
+    <a href="#"><i class="fab fa-instagram"></i></a>
+  </div>
+  <div class="top-msg">Free Shipping on Orders Over ₹999 | New Arrivals Weekly!</div>
+  <div class="account-section d-flex align-items-center">
+    <span id="welcomeMsg" class="me-2 d-none">Welcome</span>
+    <i class="fas fa-user me-1"></i>
+    <span>My Account <i class="fas fa-chevron-down"></i></span>
+    <div id="authButtons" class="ms-3 d-flex align-items-center gap-2"></div>
+  </div>
+</div>
+
+<!-- Middle Header -->
+<div class="middle-header d-flex justify-content-between align-items-center px-4">
+  <div><i class="fas fa-phone me-2"></i>+91 9876543210</div>
+  <div class="text-center">
+    <a href="#" class="brand-logo">
+      <img src="../Images/maintitle1.png" alt="The Collective Logo">
+    </a>
+  </div>
+  <div class="d-flex align-items-center position-relative">
+    <div class="search-wrapper position-relative me-2">
+      <input type="text" id="searchInput" class="search-box" placeholder="Search..." list="suggestions">
+      <datalist id="suggestions">
+        <option value="Men's Collection">
+        <option value="Women's Collection">
+        <option value="Kids">
+        <option value="Shoes">
+        <option value="Beauty">
+        <option value="Home">
+        <option value="Decor">
+      </datalist>
+    </div>
+    <a href="#" class="icon-btn" id="searchToggle"><i class="fas fa-search"></i></a>
+    <a href="wishlist.html" class="icon-btn"><i class="far fa-heart"></i></a>
+    <a href="cart.html" class="icon-btn position-relative">
+      <i class="fas fa-shopping-cart"></i>
+      <span id="cartCount" class="cart-badge">0</span>
+    </a>
+  </div>
+</div>
+
+<!-- Navigation -->
+<nav class="nav-header">
+  <div class="container">
+    <ul class="nav justify-content-center">
+      <li class="nav-item"><a class="nav-link" href="#">Home</a></li>
+      <li class="nav-item"><a class="nav-link" href="#">About Us</a></li>
+      <li class="nav-item"><a class="nav-link" href="#">New Collection</a></li>
+      <li class="nav-item"><a class="nav-link" href="#">New Arrivals</a></li>
+      <li class="nav-item"><a class="nav-link" href="#">Sale</a></li>
+      <li class="nav-item"><a class="nav-link" href="#">Menswear</a></li>
+      <li class="nav-item"><a class="nav-link" href="#">Latest Blogs</a></li>
+      <li class="nav-item"><a class="nav-link" href="#">Contact Us</a></li>
+    </ul>
+  </div>
+</nav>
+
+
+<!-- Slider -->
+<div class="slider-container">
+  <div class="slide active" style="background-image: url('../Images/men');">
+    <div class="slide-content text-center text-white">
+      <h2>Men's Collection</h2>
+      <a href="men.html">
+        <button class="btn btn-light shop-btn">Shop Now</button>
+      </a>
+    </div>
+  </div>
+  <div class="slide" style="background-image: url('../Images/women.jpg');">
+    <div class="slide-content text-center text-white">
+      <h2>Women's Collection</h2>
+      <a href="women.html">
+        <button class="btn btn-light shop-btn">Shop Now</button>
+      </a>
+    </div>
+  </div>
+  <div class="slide" style="background-image: url('../Images/kids1.jpg');">
+    <div class="slide-content text-center text-white">
+      <h2>Kids Collection</h2>
+      <a href="kids.html">
+        <button class="btn btn-light shop-btn">Shop Now</button>
+      </a>
+    </div>
+  </div>
+
+  <button class="prev btn btn-dark position-absolute top-50 start-0 translate-middle-y">&#10094;</button>
+  <button class="next btn btn-dark position-absolute top-50 end-0 translate-middle-y">&#10095;</button>
+</div>
+
+
+<!-- Category carousel -->
+<section class="category-carousel">
+  <h2>What are you shopping for today?</h2>
+  <div class="category-container">
+      <button class="category-btn left" id="prevCategoryBtn">&#10094;</button>
+      <div class="category-track" id="categoryTrack">
+          <div class="category">
+              <img src="../Images/men1.jpeg" alt="Men" id="men">
+              <span>Men</span>
+          </div>
+          <div class="category">
+              <img src="../Images/women" alt="Women" id="women">
+              <span>Women</span>
+          </div>
+          <div class="category">
+              <img src="../Images/kid" alt="Kids" id="kids">
+              <span>Kids</span>
+          </div>
+          <div class="category">
+              <img src="../Images/jewellery.jpg" alt="Jewellery" id="jewellery">
+              <span>Jewellery</span>
+          </div>
+          <div class="category">
+              <img src="../Images/shoe" alt="Shoes" id="shoes">
+              <span>Shoes</span>
+          </div>
+          <div class="category">
+              <img src="../Images/beauty.jpg" alt="Beauty" id="beauty">
+              <span>Beauty</span>
+          </div>
+          <div class="category">
+              <img src="../Images/decor.jpeg" alt="Decor" id="decor">
+              <span>Decor</span>
+          </div>
+          <div class="category">
+              <img src="../Images/home.jpeg" alt="Home" id="home">
+              <span>Home</span>
+          </div>
+      </div>
+      <button class="category-btn right" id="nextCategoryBtn">&#10095;</button>
+  </div>
+</section>
+
+<!-- Content-Based Slider -->
+<div class="content-slider-container my-5">
+  <div class="content-slide active">
+    <div class="container d-flex flex-wrap align-items-center justify-content-between">
+      <div class="text-section col-md-5">
+        <h2>Men's Collection</h2>
+        <p>Explore the latest trends in men's fashion. From casual wear to formal, we've got everything covered.</p>
+        <button class="btn btn-dark">Shop Men's</button>
+      </div>
+      <div class="image-section col-md-6">
+        <img src="../Images/men1.jpeg" alt="Men's Collection" class="img-fluid rounded">
+      </div>
+    </div>
+  </div>
+
+  <div class="content-slide">
+    <div class="container d-flex flex-wrap align-items-center justify-content-between">
+      <div class="text-section col-md-5">
+        <h2>Women's Collection</h2>
+        <p>Discover elegance and comfort with our women's collection. Perfect styles for every occasion.</p>
+        <button class="btn btn-dark">Shop Women's</button>
+      </div>
+      <div class="image-section col-md-6">
+        <img src="../Images/women1.jpg" alt="Women's Collection" class="img-fluid rounded">
+      </div>
+    </div>
+  </div>
+
+  <div class="content-slide">
+    <div class="container d-flex flex-wrap align-items-center justify-content-between">
+      <div class="text-section col-md-5">
+        <h2>Kids' Collection</h2>
+        <p>Bright, fun and comfy! Our kids' collection is perfect for the little ones in your life.</p>
+        <button class="btn btn-dark">Shop Kids'</button>
+      </div>
+      <div class="image-section col-md-6">
+        <img src="../Images/kids.jpg" alt="Kids Collection" class="img-fluid rounded">
+      </div>
+    </div>
+  </div>
+
+  <button class="content-prev btn btn-outline-dark position-absolute top-50 start-0 translate-middle-y">❮</button> 
+  <button class="content-next btn btn-outline-dark position-absolute top-50 end-0 translate-middle-y">❯</button>
+</div>
+
+<!-- Footer HTML -->
+<footer class="footer mt-5">
+  <div class="container">
+    <div class="row">
+      <!-- Logo and About Section -->
+      <div class="col-md-3 mb-4">
+        <div class="footer-logo mb-3">
+          <img src="../Images/logo1.png" alt="" width="70px" height="100%">
+          <p class="tagline">Shop Anything!</p>
+        </div>
+        <div class="about-section">
+          <h5>About Us</h5>
+          <p class="about-text">We want to help bring all the items together</p>
+        </div>
+        <div class="contact-section mt-4">
+          <h5>Contact Us</h5>
+          <div class="contact-info">
+            <p><i class="fas fa-phone-alt me-2"></i> +91 98765 43210</p>
+            <p><i class="fas fa-envelope me-2"></i> thecollective@email.com</p>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Information Section -->
+      <div class="col-md-3 mb-4">
+        <h5>Information</h5>
+        <ul class="footer-links">
+          <li><a href="#">About Us</a></li>
+          <li><a href="#">More Search</a></li>
+          <li><a href="#">Blog</a></li>
+          <li><a href="#">Testimonials</a></li>
+          <li><a href="#">Events</a></li>
+        </ul>
+      </div>
+      
+      <!-- Helpful Links Section -->
+      <div class="col-md-3 mb-4">
+        <h5>Helpful Links</h5>
+        <ul class="footer-links">
+          <li><a href="#">Services</a></li>
+          <li><a href="#">Supports</a></li>
+          <li><a href="#">Terms & Condition</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+        </ul>
+      </div>
+      
+      <!-- Subscribe Section -->
+      <div class="col-md-3 mb-4">
+        <h5>Subscribe For More</h5>
+        <div class="subscribe-form">
+          <div class="form-group mb-2">
+            <input type="email" class="form-control" id="emailSubscribe" placeholder="Enter your Email">
+          </div>
+          <button id="subscribeBtn" class="btn btn-dark btn-subscribe">Subscribe</button>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Divider -->
+    <hr class="footer-divider">
+    
+    <!-- Divider above social icons and copyright -->
+    <hr class="social-divider">
+    
+    <!-- Footer Bottom with Social Icons and Copyright -->
+    <div class="footer-bottom">
+      <div class="row align-items-center">
+        <div class="col-md-6">
+          <div class="social-links">
+            <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" class="social-icon"><i class="fab fa-google"></i></a>
+            <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+            <a href="#" class="social-icon"><i class="fab fa-pinterest"></i></a>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <p class="copyright text-md-end">© 2025 Company Ltd. All rights reserved</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<div class="back-to-top" id="backToTop">
+  <i class="fas fa-arrow-up"></i>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="../JavaScript/homepage.js"></script>
+</body>
+</html>

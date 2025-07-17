@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Enhanced Payment</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js"></script>
+  <style>
+    :root {
+      --deep-teal: #264653;
+      --teal: #2a9d8f;
+      --sand: #e9c46a;
+      --orange: #f4a261;
+      --rust: #e76f51;
+      --light-teal: rgba(42, 157, 143, 0.1);
+      --gradient-primary: linear-gradient(135deg, var(--teal) 0%, var(--deep-teal) 100%);
+    }
+
+    body {
+      background: linear-gradient(135deg, #f1f3f4 0%, #e8eaf6 50%, #f3e5f5 100%);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      padding: 40px 20px;
+    }
+
+    .breadcrumb-nav {
+      text-align: center;
+      font-weight: 600;
+      font-size: 1.1rem;
+      color: #6c757d;
+      margin-bottom: 30px;
+    }
+
+    .breadcrumb-nav span {
+      margin: 0 15px;
+    }
+
+    .breadcrumb-nav .current-step {
+      color: var(--teal);
+      font-weight: 700;
+      text-shadow: 0 2px 4px rgba(42, 157, 143, 0.3);
+    }
+
+    .container-box {
+      max-width: 1000px;
+      margin: auto;
+      background: linear-gradient(135deg, rgba(255,255,255,0.95), rgba(255,255,255,0.9));
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 8px 25px rgba(42, 157, 143, 0.15);
+      display: flex;
+      gap: 30px;
+    }
+
+    .payment-methods {
+      width: 30%;
+    }
+
+    .method-option {
+      background: #fff;
+      border: 2px solid #e9ecef;
+      border-radius: 12px;
+      padding: 15px 20px;
+      margin-bottom: 15px;
+      cursor: pointer;
+      font-weight: 500;
+    }
+
+    .method-option:hover, .method-option.active {
+      border-color: var(--teal);
+      box-shadow: 0 4px 15px rgba(42, 157, 143, 0.2);
+    }
+
+    .method-forms {
+      width: 70%;
+    }
+
+    .method-form {
+      display: none;
+    }
+
+    .method-form.active {
+      display: block;
+    }
+
+    .form-control:focus {
+      border-color: var(--teal);
+      box-shadow: 0 0 0 0.25rem var(--light-teal);
+    }
+
+    .form-control.is-invalid {
+      border-color: #dc3545;
+      box-shadow: 0 0 0 0.25rem rgba(220, 53, 69, 0.25);
+    }
+
+    .form-control.is-valid {
+      border-color: #28a745;
+      box-shadow: 0 0 0 0.25rem rgba(40, 167, 69, 0.25);
+    }
+
+    .invalid-feedback {
+      display: block;
+      color: #dc3545;
+      font-size: 0.875rem;
+      margin-top: 0.25rem;
+    }
+
+    .btn-confirm {
+      background: var(--gradient-primary);
+      color: white;
+      font-weight: 600;
+      padding: 12px 25px;
+      border: none;
+      border-radius: 12px;
+      margin-top: 20px;
+      transition: all 0.3s ease;
+    }
+
+    .btn-confirm:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(42, 157, 143, 0.3);
+    }
+
+    .qr-preview {
+      text-align: center;
+    }
+
+    .qr-preview img {
+      width: 140px;
+      margin-top: 10px;
+    }
+
+    .otp-section {
+      display: none;
+      margin-top: 15px;
+      padding: 15px;
+      background: rgba(42, 157, 143, 0.05);
+      border-radius: 10px;
+      border: 1px solid rgba(42, 157, 143, 0.2);
+    }
+
+    .otp-section.show {
+      display: block;
+      animation: slideDown 0.3s ease-out;
+    }
+
+    @keyframes slideDown {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Success Popup Styles */
+    .success-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.6);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      backdrop-filter: blur(5px);
+    }
+
+    .success-popup {
+      background: white;
+      padding: 40px 30px;
+      border-radius: 20px;
+      text-align: center;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+      max-width: 400px;
+      width: 90%;
+      transform: scale(0.7);
+      opacity: 0;
+      transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    }
+
+    .success-popup.show {
+      transform: scale(1);
+      opacity: 1;
+    }
+
+    .success-animation {
+      width: 120px;
+      height: 120px;
+      margin: 0 auto 20px;
+      position: relative;
+    }
+
+    .lottie-container {
+      width: 120px;
+      height: 120px;
+      animation: scaleIn 0.5s ease-out;
+    }
+
+    @keyframes scaleIn {
+      0% { transform: scale(0); }
+      100% { transform: scale(1); }
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.1); opacity: 0.7; }
+    }
+
+    .success-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #28a745;
+      margin-bottom: 10px;
+      animation: fadeInUp 0.5s ease-out 1.1s both;
+    }
+
+    .success-subtitle {
+      font-size: 1rem;
+      color: #6c757d;
+      margin-bottom: 20px;
+      animation: fadeInUp 0.5s ease-out 1.3s both;
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .confetti {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      background: var(--teal);
+    }
+
+    .confetti-1 { background: var(--sand); left: 20%; animation: confetti-fall 3s ease-out infinite; }
+    .confetti-2 { background: var(--orange); left: 40%; animation: confetti-fall 3s ease-out 0.3s infinite; }
+    .confetti-3 { background: var(--rust); left: 60%; animation: confetti-fall 3s ease-out 0.6s infinite; }
+    .confetti-4 { background: var(--teal); left: 80%; animation: confetti-fall 3s ease-out 0.9s infinite; }
+
+    @keyframes confetti-fall {
+      0% { transform: translateY(-100vh) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+  <div class="breadcrumb-nav">
+    <span>🛒 Cart</span>
+    <span>→</span>
+    <span>🚚 Delivery</span>
+    <span>→</span>
+    <span class="current-step">💳 Payment</span>
+  </div>
+
+  <div class="container-box">
+    <div class="payment-methods">
+      <div class="method-option active" onclick="showForm('upi')">🟢 UPI</div>
+      <div class="method-option" onclick="showForm('card')">💳 Credit/Debit Card</div>
+      <div class="method-option" onclick="showForm('netbank')">🏦 Net Banking</div>
+      <div class="method-option" onclick="showForm('cod')">📦 Cash on Delivery</div>
+    </div>
+
+    <div class="method-forms">
+      <div class="method-form active" id="form-upi">
+        <label class="form-label fw-bold">Enter UPI ID</label>
+        <input type="text" id="upi-id" class="form-control mb-3" placeholder="e.g., yourname@bank" />
+        <div class="invalid-feedback" id="upi-error"></div>
+        <div class="qr-preview">
+          <label class="form-label fw-bold">or Scan QR Code</label><br>
+          <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=upi://pay" alt="QR Code"/>
+        </div>
+        <button class="btn-confirm" onclick="validateAndSubmit('upi')">Pay & Confirm Order</button>
+      </div>
+
+      <div class="method-form" id="form-card">
+        <label class="form-label fw-bold">Card Number 💳</label>
+        <input type="text" id="card-number" class="form-control mb-2" placeholder="💳 1234 5678 9012 3456" maxlength="19" />
+        <div class="invalid-feedback" id="card-number-error"></div>
+        <div class="row g-2 mb-2">
+          <div class="col-md-6">
+            <input type="text" id="card-expiry" class="form-control" placeholder="MM/YY" maxlength="5" />
+            <div class="invalid-feedback" id="card-expiry-error"></div>
+          </div>
+          <div class="col-md-6">
+            <input type="text" id="card-cvv" class="form-control" placeholder="CVV" maxlength="3" />
+            <div class="invalid-feedback" id="card-cvv-error"></div>
+          </div>
+        </div>
+        <input type="text" id="card-name" class="form-control mb-3" placeholder="Cardholder Name" />
+        <div class="invalid-feedback" id="card-name-error"></div>
+        
+        <div class="otp-section" id="card-otp-section">
+          <label class="form-label fw-bold">Enter OTP 🔐</label>
+          <input type="text" id="card-otp" class="form-control" placeholder="Enter 4-digit OTP" maxlength="4" />
+          <div class="invalid-feedback" id="card-otp-error"></div>
+          <small class="text-muted">OTP sent to your registered mobile number</small>
+        </div>
+        
+        <button class="btn-confirm" onclick="validateAndSubmit('card')">Pay & Confirm Order</button>
+      </div>
+
+      <div class="method-form" id="form-netbank">
+        <label class="form-label fw-bold">Select Bank</label>
+        <select id="bank-select" class="form-select mb-3" onchange="showNetbankForm(this.value)">
+          <option value="">Choose...</option>
+          <option>SBI</option>
+          <option>HDFC</option>
+          <option>ICICI</option>
+        </select>
+        <div class="invalid-feedback" id="bank-error"></div>
+        <div id="netbank-fields" style="display:none;">
+          <input type="text" id="account-number" class="form-control mb-2" placeholder="Account Number" />
+          <div class="invalid-feedback" id="account-error"></div>
+          <input type="text" id="ifsc-code" class="form-control mb-2" placeholder="IFSC Code" />
+          <div class="invalid-feedback" id="ifsc-error"></div>
+          <input type="text" id="account-holder" class="form-control mb-2" placeholder="Account Holder Name" />
+          <div class="invalid-feedback" id="holder-error"></div>
+          
+          <div class="otp-section" id="netbank-otp-section">
+            <label class="form-label fw-bold">Enter OTP 🔐</label>
+            <input type="text" id="netbank-otp" class="form-control" placeholder="Enter 4-digit OTP" maxlength="4" />
+            <div class="invalid-feedback" id="netbank-otp-error"></div>
+            <small class="text-muted">OTP sent to your registered mobile number</small>
+          </div>
+          
+          <button class="btn-confirm" onclick="validateAndSubmit('netbank')">Pay & Confirm Order</button>
+        </div>
+      </div>
+
+      <div class="method-form" id="form-cod">
+        <label class="form-label fw-bold mb-3">Preferred Delivery Timing</label><br/>
+        <div class="form-check">
+          <input type="radio" name="codTime" class="form-check-input" id="home" checked>
+          <label class="form-check-label" for="home">🏠 Home (7:00 AM - 10:00 AM)</label>
+        </div>
+        <div class="form-check">
+          <input type="radio" name="codTime" class="form-check-input" id="office">
+          <label class="form-check-label" for="office">🏢 Office (9:00 AM - 5:00 PM)</label>
+        </div>
+        <button class="btn-confirm" onclick="validateAndSubmit('cod')">Confirm COD Order</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Success Popup -->
+  <div class="success-overlay" id="success-overlay">
+    <div class="success-popup" id="success-popup">
+      <div class="confetti confetti-1"></div>
+      <div class="confetti confetti-2"></div>
+      <div class="confetti confetti-3"></div>
+      <div class="confetti confetti-4"></div>
+      
+      <div class="success-animation">
+        <div class="lottie-container" id="lottie-animation"></div>
+      </div>
+      
+      <div class="success-title">Order placed successfully!</div>
+      <div class="success-subtitle">Thank you for ordering</div>
+    </div>
+  </div>
+
+  <script>
+    let validationStates = {
+      card: { basic: false, otp: false },
+      netbank: { basic: false, otp: false }
+    };
+
+    function showForm(method) {
+      document.querySelectorAll('.method-option').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.method-form').forEach(form => form.classList.remove('active'));
+      document.querySelector('[onclick="showForm(\'' + method + '\')"]').classList.add('active');
+      document.getElementById('form-' + method).classList.add('active');
+      clearValidationErrors();
+      
+      // Reset validation states
+      validationStates = {
+        card: { basic: false, otp: false },
+        netbank: { basic: false, otp: false }
+      };
+    }
+
+    function showNetbankForm(val) {
+      document.getElementById("netbank-fields").style.display = val ? "block" : "none";
+      clearValidationErrors();
+      validationStates.netbank = { basic: false, otp: false };
+    }
+
+    function clearValidationErrors() {
+      document.querySelectorAll('.form-control, .form-select').forEach(el => {
+        el.classList.remove('is-invalid', 'is-valid');
+      });
+      document.querySelectorAll('.invalid-feedback').forEach(el => {
+        el.textContent = '';
+      });
+      document.querySelectorAll('.otp-section').forEach(el => {
+        el.classList.remove('show');
+      });
+    }
+
+    function validateName(name) {
+      return /^[a-zA-Z\s]+$/.test(name.trim());
+    }
+
+    function validateUPI() {
+      const upiId = document.getElementById('upi-id').value.trim();
+      const upiError = document.getElementById('upi-error');
+      const upiField = document.getElementById('upi-id');
+
+      if (!upiId) {
+        upiField.classList.add('is-invalid');
+        upiError.textContent = 'UPI ID is required';
+        return false;
+      }
+
+      if (!upiId.includes('@')) {
+        upiField.classList.add('is-invalid');
+        upiError.textContent = 'UPI ID must contain "@" symbol';
+        return false;
+      }
+
+      const upiRegex = /^[a-zA-Z0-9.\-_]{2,256}@[a-zA-Z][a-zA-Z0-9.-]{1,64}$/;
+      if (!upiRegex.test(upiId)) {
+        upiField.classList.add('is-invalid');
+        upiError.textContent = 'Please enter a valid UPI ID';
+        return false;
+      }
+
+      upiField.classList.remove('is-invalid');
+      upiField.classList.add('is-valid');
+      upiError.textContent = '';
+      return true;
+    }
+
+    function validateCard() {
+      let isValid = true;
+
+      // Card Number Validation
+      const cardNumber = document.getElementById('card-number').value.replace(/\s/g, '');
+      const cardNumberField = document.getElementById('card-number');
+      const cardNumberError = document.getElementById('card-number-error');
+
+      if (!cardNumber) {
+        cardNumberField.classList.add('is-invalid');
+        cardNumberError.textContent = 'Card number is required';
+        isValid = false;
+      } else if (!/^\d{13,19}$/.test(cardNumber)) {
+        cardNumberField.classList.add('is-invalid');
+        cardNumberError.textContent = 'Card number must be 13-19 digits';
+        isValid = false;
+      } else {
+        cardNumberField.classList.remove('is-invalid');
+        cardNumberField.classList.add('is-valid');
+        cardNumberError.textContent = '';
+      }
+
+      // Expiry Date Validation
+      const expiry = document.getElementById('card-expiry').value;
+      const expiryField = document.getElementById('card-expiry');
+      const expiryError = document.getElementById('card-expiry-error');
+
+      if (!expiry) {
+        expiryField.classList.add('is-invalid');
+        expiryError.textContent = 'Expiry date is required';
+        isValid = false;
+      } else if (!/^(0[1-9]|1[0-2])\/\d{2}$/.test(expiry)) {
+        expiryField.classList.add('is-invalid');
+        expiryError.textContent = 'Format should be MM/YY';
+        isValid = false;
+      } else {
+        const [month, year] = expiry.split('/');
+        const currentDate = new Date();
+        const expiryDate = new Date(2000 + parseInt(year), parseInt(month) - 1);
+        
+        if (expiryDate <= currentDate) {
+          expiryField.classList.add('is-invalid');
+          expiryError.textContent = 'Card has expired';
+          isValid = false;
+        } else {
+          expiryField.classList.remove('is-invalid');
+          expiryField.classList.add('is-valid');
+          expiryError.textContent = '';
+        }
+      }
+      
+
+      // CVV Validation
+      const cvv = document.getElementById('card-cvv').value;
+      const cvvField = document.getElementById('card-cvv');
+      const cvvError = document.getElementById('card-cvv-error');
+
+      if (!cvv) {
+        cvvField.classList.add('is-invalid');
+        cvvError.textContent = 'CVV is required';
+        isValid = false;
+      } else if (!/^\d{3}$/.test(cvv)) {
+        cvvField.classList.add('is-invalid');
+        cvvError.textContent = 'CVV must be exactly 3 digits';
+        isValid = false;
+      } else {
+        cvvField.classList.remove('is-invalid');
+        cvvField.classList.add('is-valid');
+        cvvError.textContent = '';
+      }
+
+      // Cardholder Name Validation
+      const cardName = document.getElementById('card-name').value.trim();
+      const cardNameField = document.getElementById('card-name');
+      const cardNameError = document.getElementById('card-name-error');
+
+      if (!cardName) {
+        cardNameField.classList.add('is-invalid');
+        cardNameError.textContent = 'Cardholder name is required';
+        isValid = false;
+      } else if (!validateName(cardName)) {
+        cardNameField.classList.add('is-invalid');
+        cardNameError.textContent = 'Name should contain only letters';
+        isValid = false;
+      } else if (cardName.length < 2) {
+        cardNameField.classList.add('is-invalid');
+        cardNameError.textContent = 'Please enter a valid name';
+        isValid = false;
+      } else {
+        cardNameField.classList.remove('is-invalid');
+        cardNameField.classList.add('is-valid');
+        cardNameError.textContent = '';
+      }
+
+      validationStates.card.basic = isValid;
+
+      // Show OTP section if basic validation passes
+      if (isValid && !document.getElementById('card-otp-section').classList.contains('show')) {
+        document.getElementById('card-otp-section').classList.add('show');
+        return false; // Don't proceed until OTP is entered
+      }
+
+      // Validate OTP if section is shown
+      if (document.getElementById('card-otp-section').classList.contains('show')) {
+        const otp = document.getElementById('card-otp').value;
+        const otpField = document.getElementById('card-otp');
+        const otpError = document.getElementById('card-otp-error');
+
+        if (!otp) {
+          otpField.classList.add('is-invalid');
+          otpError.textContent = 'OTP is required';
+          return false;
+        } else if (!/^\d{4}$/.test(otp)) {
+          otpField.classList.add('is-invalid');
+          otpError.textContent = 'OTP must be exactly 4 digits';
+          return false;
+        } else {
+          otpField.classList.remove('is-invalid');
+          otpField.classList.add('is-valid');
+          otpError.textContent = '';
+          validationStates.card.otp = true;
+        }
+      }
+
+      return isValid && validationStates.card.otp;
+    }
+
+    function validateNetBank() {
+      let isValid = true;
+
+      // Bank Selection
+      const bankSelect = document.getElementById('bank-select').value;
+      const bankField = document.getElementById('bank-select');
+      const bankError = document.getElementById('bank-error');
+
+      if (!bankSelect) {
+        bankField.classList.add('is-invalid');
+        bankError.textContent = 'Please select a bank';
+        isValid = false;
+      } else {
+        bankField.classList.remove('is-invalid');
+        bankField.classList.add('is-valid');
+        bankError.textContent = '';
+      }
+
+      if (bankSelect) {
+        // Account Number Validation
+        const accountNumber = document.getElementById('account-number').value.trim();
+        const accountField = document.getElementById('account-number');
+        const accountError = document.getElementById('account-error');
+
+        if (!accountNumber) {
+          accountField.classList.add('is-invalid');
+          accountError.textContent = 'Account number is required';
+          isValid = false;
+        } else if (!/^\d{9,18}$/.test(accountNumber)) {
+          accountField.classList.add('is-invalid');
+          accountError.textContent = 'Account number must be 9-18 digits';
+          isValid = false;
+        } else {
+          accountField.classList.remove('is-invalid');
+          accountField.classList.add('is-valid');
+          accountError.textContent = '';
+        }
+
+        // IFSC Code Validation
+        const ifscCode = document.getElementById('ifsc-code').value.trim().toUpperCase();
+        const ifscField = document.getElementById('ifsc-code');
+        const ifscError = document.getElementById('ifsc-error');
+
+        if (!ifscCode) {
+          ifscField.classList.add('is-invalid');
+          ifscError.textContent = 'IFSC code is required';
+          isValid = false;
+        } else if (!/^[A-Z]{4}0[A-Z0-9]{6}$/.test(ifscCode)) {
+          ifscField.classList.add('is-invalid');
+          ifscError.textContent = 'Please enter a valid IFSC code';
+          isValid = false;
+        } else {
+          ifscField.classList.remove('is-invalid');
+          ifscField.classList.add('is-valid');
+          ifscError.textContent = '';
+        }
+
+        // Account Holder Name Validation
+        const holderName = document.getElementById('account-holder').value.trim();
+        const holderField = document.getElementById('account-holder');
+        const holderError = document.getElementById('holder-error');
+
+        if (!holderName) {
+          holderField.classList.add('is-invalid');
+          holderError.textContent = 'Account holder name is required';
+          isValid = false;
+        } else if (!validateName(holderName)) {
+          holderField.classList.add('is-invalid');
+          holderError.textContent = 'Name should contain only letters';
+          isValid = false;
+        } else if (holderName.length < 2) {
+          holderField.classList.add('is-invalid');
+          holderError.textContent = 'Please enter a valid name';
+          isValid = false;
+        } else {
+          holderField.classList.remove('is-invalid');
+          holderField.classList.add('is-valid');
+          holderError.textContent = '';
+        }
+
+        validationStates.netbank.basic = isValid;
+
+        // Show OTP section if basic validation passes
+        if (isValid && !document.getElementById('netbank-otp-section').classList.contains('show')) {
+          document.getElementById('netbank-otp-section').classList.add('show');
+          return false; // Don't proceed until OTP is entered
+        }
+
+        // Validate OTP if section is shown
+        if (document.getElementById('netbank-otp-section').classList.contains('show')) {
+          const otp = document.getElementById('netbank-otp').value;
+          const otpField = document.getElementById('netbank-otp');
+          const otpError = document.getElementById('netbank-otp-error');
+
+          if (!otp) {
+            otpField.classList.add('is-invalid');
+            otpError.textContent = 'OTP is required';
+            return false;
+          } else if (!/^\d{4}$/.test(otp)) {
+            otpField.classList.add('is-invalid');
+            otpError.textContent = 'OTP must be exactly 4 digits';
+            return false;
+          } else {
+            otpField.classList.remove('is-invalid');
+            otpField.classList.add('is-valid');
+            otpError.textContent = '';
+            validationStates.netbank.otp = true;
+          }
+        }
+      }
+
+      return isValid && validationStates.netbank.otp;
+    }
+
+    function validateAndSubmit(method) {
+      let isValid = false;
+
+      switch(method) {
+        case 'upi':
+          isValid = validateUPI();
+          break;
+        case 'card':
+          isValid = validateCard();
+          break;
+        case 'netbank':
+          isValid = validateNetBank();
+          break;
+        case 'cod':
+          isValid = true; // COD doesn't require validation
+          break;
+      }
+
+      if (isValid) {
+        showSuccessPopup();
+      }
+    }
+
+    function showSuccessPopup() {
+      const overlay = document.getElementById('success-overlay');
+      const popup = document.getElementById('success-popup');
+      
+      overlay.style.display = 'flex';
+      setTimeout(() => {
+        popup.classList.add('show');
+        // Initialize Lottie animation
+        initializeLottieAnimation();
+      }, 100);
+
+      // Auto close after 4 seconds
+      setTimeout(() => {
+        popup.classList.remove('show');
+        setTimeout(() => {
+          overlay.style.display = 'none';
+        }, 500);
+        // Remove the redirect since thankyou.html might not exist
+        window.location.href='thankyou.html';
+      }, 4000);
+    }
+
+    function initializeLottieAnimation() {
+      lottie.loadAnimation({
+        container: document.getElementById('lottie-animation'),
+        renderer: 'svg',
+        loop: false,
+        autoplay: true,
+        path: 'success-animation.json'
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const expiryInput = document.getElementById('card-expiry');
+      expiryInput.addEventListener('input', function (e) {
+        let value = e.target.value.replace(/\D/g, '').slice(0, 4);
+        if (value.length >= 3) {
+          value = value.slice(0, 2) + '/' + value.slice(2);
+        }
+        e.target.value = value;
+      });
+    });
+
+    document.addEventListener('DOMContentLoaded', () => {
+  const cardInput = document.getElementById('card-number');
+
+  // Create and style card logo container
+  const logo = document.createElement('img');
+  logo.id = 'card-logo';
+  logo.style.position = 'absolute';
+  logo.style.right = '12px';
+  logo.style.top = '50%';
+  logo.style.transform = 'translateY(-50%)';
+  logo.style.height = '24px';
+  logo.style.display = 'none';
+
+  // Wrap input in a relatively positioned div
+  const wrapper = document.createElement('div');
+  wrapper.style.position = 'relative';
+
+  const parent = cardInput.parentElement;
+  parent.insertBefore(wrapper, cardInput);
+  wrapper.appendChild(cardInput);
+  wrapper.appendChild(logo);
+
+  // Live formatting and logo detection
+  cardInput.addEventListener('input', function (e) {
+    let raw = e.target.value.replace(/\D/g, '').slice(0, 16); // Only digits
+    let formatted = raw.replace(/(.{4})/g, '$1 ').trim();      // Add spaces
+    e.target.value = formatted;
+
+    // Card Type Detection
+    if (raw.startsWith('4')) {
+      logo.src = 'https://upload.wikimedia.org/wikipedia/commons/5/5e/Visa_Inc._logo.svg'; // Visa logo
+      logo.style.display = 'block';
+    } else if (raw.startsWith('5')) {
+      logo.src = 'https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg'; // Mastercard logo
+      logo.style.display = 'block';
+    } else {
+      logo.style.display = 'none';
+    }
+  });
+});
+
+
+</script>
+</body>
+</html>

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signup page</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap" rel="stylesheet">
+    <link rel="shortcut icon" href="../Images/logo1.png" type="image/x-icon">
+    <link rel="stylesheet" href="../CSS/signup.css">
+
+</head>
+<body>
+    <div id="signup-container">
+        <div class="background">
+            <div class="shape"></div>
+            <div class="shape"></div>
+        </div>
+
+        <form action="" id="signup-form">
+            <h1>Sign-up</h1>
+            
+            <div class="columns-container">
+                <!-- Left Column -->
+                <div class="column left-column">
+                    <div class="form-group">
+                        <label for="username">Username</label>
+                        <input type="text" name="username" id="username" placeholder="Enter the username">
+                        <span id="usernameError" class="error"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" name="password" placeholder="Enter the password">
+                        <span id="passwordError" class="error"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="Cpassword">Confirm-password</label>
+                        <input type="password" id="Cpassword" name="Cpassword" placeholder="Re-enter the password">
+                        <span id="CpasswordError" class="error"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="mail">E-mail</label>
+                        <input type="email" id="mail" name="mail" placeholder="Enter your mail">
+                        <span id="mailError" class="error"></span>
+                    </div>
+                </div>
+                
+                <!-- Divider -->
+                <div class="divider"></div>
+                
+                <!-- Right Column -->
+                <div class="column right-column">
+                    <div class="form-group">
+                        <label for="dob">Date of Birth</label>
+                        <input type="date" name="date" id="dob">
+                        <span id="dobError" class="error"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="num">Ph No</label>
+                        <input type="tel" name="number" id="num" placeholder="Enter your number">
+                        <span id="numError" class="error"></span>
+                    </div>
+                    <div class="form-group">
+                        <label>Gender</label>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" id="male" name="gender" value="male">
+                                <label for="male">Male</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" id="female" name="gender" value="female">
+                                <label for="female">Female</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" id="others" name="gender" value="others">
+                                <label for="others">Others</label>
+                            </div>
+                        </div>
+                        <span id="genError" class="error"></span>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="button-group">
+                <button id="sub-btn">Sign-up</button>
+                <button type="reset" id="cancel-btn">Cancel</button>
+            </div>
+            
+            <div id="form-footer">
+                Already have an account?&nbsp;&nbsp;<a href="login.html">Login</a>
+            </div>
+        </form>
+    </div>
+
+    <script src="../JavaScript/signup.js"></script>
+</body>
+</html>
