@@ -1,0 +1,909 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shipping Details</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    :root {
+      --deep-teal: #264653;
+      --teal: #2a9d8f;
+      --sand: #e9c46a;
+      --orange: #f4a261;
+      --rust: #e76f51;
+      --light-teal: rgba(42, 157, 143, 0.1);
+      --gradient-primary: linear-gradient(135deg, var(--teal) 0%, var(--deep-teal) 100%);
+      --gradient-light: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+      --shadow-soft: 0 8px 25px rgba(42, 157, 143, 0.15);
+      --shadow-hover: 0 12px 35px rgba(42, 157, 143, 0.25);
+    }
+
+    body {
+      background: linear-gradient(135deg, #f1f3f4 0%, #e8eaf6 50%, #f3e5f5 100%);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      padding: 40px 20px;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 1200px;
+      animation: fadeInUp 0.8s ease-out;
+    }
+
+    .breadcrumb-nav span {
+      margin: 0 15px;
+      transition: all 0.3s ease;
+    }
+
+    .breadcrumb-nav .current-step {
+      color: var(--teal);
+      font-weight: 700;
+      text-shadow: 0 2px 4px rgba(42, 157, 143, 0.3);
+    }
+
+    /* Enhanced Back Link */
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      margin-bottom: 25px;
+      color: var(--teal);
+      text-decoration: none;
+      font-weight: 500;
+      padding: 10px 20px;
+      background: white;
+      border-radius: 25px;
+      box-shadow: var(--shadow-soft);
+      transition: all 0.3s ease;
+    }
+
+    .back-link:hover {
+      transform: translateX(-5px);
+      box-shadow: var(--shadow-hover);
+      color: var(--deep-teal);
+    }
+
+    /* Premium Form Section */
+    .form-section {
+      background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.9) 100%);
+      backdrop-filter: blur(10px);
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: var(--shadow-soft);
+      border: 1px solid rgba(255,255,255,0.2);
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .form-section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 5px;
+      background: var(--gradient-primary);
+    }
+
+    .form-section:hover {
+      transform: translateY(-8px);
+      box-shadow: var(--shadow-hover);
+    }
+
+    .section-title {
+      color: var(--deep-teal);
+      font-weight: 700;
+      margin-bottom: 25px;
+      position: relative;
+      padding-left: 20px;
+    }
+
+    .section-title::before {
+      /* content: '✨'; */
+      position: absolute;
+      left: 0;
+      font-size: 1.2em;
+    }
+
+    /* Enhanced Form Controls */
+    .form-control {
+      border: 2px solid #e9ecef;
+      border-radius: 12px;
+      padding: 15px 20px;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      background: rgba(255,255,255,0.8);
+    }
+
+    .form-control:focus {
+      border-color: var(--teal);
+      box-shadow: 0 0 0 0.25rem var(--light-teal);
+      background: white;
+      transform: translateY(-2px);
+    }
+
+    .form-control::placeholder {
+      color: #8e9ba3;
+      font-weight: 400;
+    }
+
+    /* Saved Addresses Enhanced */
+    .saved-addresses {
+      margin-bottom: 35px;
+      background: var(--gradient-light);
+      border-radius: 20px;
+      padding: 30px;
+      border: 2px solid transparent;
+      transition: all 0.4s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .saved-addresses::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: conic-gradient(from 0deg, transparent, var(--teal), transparent);
+      animation: rotate 4s linear infinite;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .saved-addresses:hover::before {
+      opacity: 0.1;
+    }
+
+    .saved-addresses:hover {
+      border-color: var(--teal);
+      transform: translateY(-5px);
+      box-shadow: var(--shadow-hover);
+    }
+
+    .address-card {
+      background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.9) 100%);
+      backdrop-filter: blur(10px);
+      border: 2px solid rgba(42, 157, 143, 0.1);
+      border-radius: 15px;
+      padding: 25px;
+      margin-bottom: 20px;
+      cursor: pointer;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .address-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 5px;
+      height: 100%;
+      background: var(--gradient-primary);
+      transform: scaleY(0);
+      transition: transform 0.4s ease;
+      transform-origin: top;
+    }
+
+    .address-card:hover {
+      border-color: var(--teal);
+      box-shadow: var(--shadow-hover);
+      transform: translateX(8px) translateY(-3px);
+    }
+
+    .address-card:hover::before {
+      transform: scaleY(1);
+    }
+
+    .address-card.selected {
+      border-color: var(--teal);
+      background: linear-gradient(135deg, var(--light-teal) 0%, rgba(42, 157, 143, 0.05) 100%);
+      transform: translateX(8px) translateY(-3px);
+      box-shadow: var(--shadow-hover);
+    }
+
+    .address-card.selected::before {
+      transform: scaleY(1);
+    }
+
+    .address-type {
+      background: var(--gradient-primary);
+      color: white;
+      padding: 6px 15px;
+      border-radius: 25px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      box-shadow: 0 4px 15px rgba(42, 157, 143, 0.3);
+    }
+
+    .add-new-toggle {
+      background: var(--gradient-primary);
+      color: white;
+      border: none;
+      padding: 15px 30px;
+      border-radius: 30px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      box-shadow: 0 6px 20px rgba(42, 157, 143, 0.4);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .add-new-toggle::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      background: rgba(255,255,255,0.2);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      transition: all 0.3s ease;
+    }
+
+    .add-new-toggle:hover::before {
+      width: 300px;
+      height: 300px;
+    }
+
+    .add-new-toggle:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(42, 157, 143, 0.5);
+      color: white;
+    }
+
+    /* Enhanced New Address Form */
+    .new-address-form {
+      margin-top: 25px;
+      padding: 30px;
+      background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.9) 100%);
+      backdrop-filter: blur(10px);
+      border-radius: 15px;
+      border: 2px dashed var(--teal);
+      animation: slideDown 0.5s ease;
+      box-shadow: var(--shadow-soft);
+    }
+
+    /* Premium Order Summary */
+    .order-summary {
+      background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.9) 100%);
+      backdrop-filter: blur(10px);
+      padding: 35px;
+      border-radius: 20px;
+      box-shadow: var(--shadow-soft);
+      border: 1px solid rgba(255,255,255,0.2);
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .order-summary::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 5px;
+      background: linear-gradient(90deg, var(--rust), var(--orange));
+    }
+
+    .order-summary:hover {
+      transform: translateY(-8px);
+      box-shadow: var(--shadow-hover);
+    }
+
+    .order-summary h5 {
+      color: var(--deep-teal);
+      font-weight: 700;
+      margin-bottom: 25px;
+    }
+
+    /* Enhanced Delivery Options */
+    .delivery-options {
+      background: var(--gradient-light);
+      padding: 20px;
+      border-radius: 15px;
+      margin: 20px 0;
+      border: 2px solid transparent;
+      transition: all 0.3s ease;
+    }
+
+    .delivery-options:hover {
+      border-color: var(--teal);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .delivery-option {
+      display: flex;
+      align-items: center;
+      padding: 12px 15px;
+      margin: 8px 0;
+      background: white;
+      border-radius: 10px;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+
+    .delivery-option:hover {
+      background: var(--light-teal);
+      transform: translateX(5px);
+    }
+
+    .delivery-option input[type="radio"] {
+      width: 20px;
+      height: 20px;
+      accent-color: var(--teal);
+      margin-right: 12px;
+    }
+
+    /* Enhanced Delivery Box */
+    .delivery-box {
+      background: var(--gradient-light);
+      padding: 20px;
+      border-radius: 15px;
+      margin-bottom: 15px;
+      border-left: 5px solid var(--teal);
+      transition: all 0.3s ease;
+    }
+
+    .delivery-box:hover {
+      transform: translateX(5px);
+      box-shadow: var(--shadow-soft);
+    }
+
+    /* Enhanced Coupon Box */
+    .coupon-box {
+      background: var(--gradient-light);
+      padding: 20px;
+      border-radius: 15px;
+      margin: 20px 0;
+      border: 2px solid transparent;
+      transition: all 0.3s ease;
+    }
+
+    .coupon-box:hover {
+      border-color: var(--teal);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .coupon-box .input-group {
+      display: flex;
+      gap: 10px;
+    }
+
+    .coupon-box .form-control {
+      flex: 1;
+      max-width: none;
+    }
+
+    .coupon-box .btn {
+      background: var(--gradient-primary);
+      border: none;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 10px;
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
+
+    .coupon-box .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px rgba(42, 157, 143, 0.4);
+    }
+
+    /* Enhanced Buttons */
+    .btn-green {
+      background: var(--gradient-primary);
+      color: white;
+      border: none;
+      padding: 15px 30px;
+      border-radius: 15px;
+      font-weight: 600;
+      font-size: 1.1rem;
+      transition: all 0.3s ease;
+      box-shadow: 0 6px 20px rgba(42, 157, 143, 0.4);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-green::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      background: rgba(255,255,255,0.2);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      transition: all 0.3s ease;
+    }
+
+    .btn-green:hover::before {
+      width: 300px;
+      height: 300px;
+    }
+
+    .btn-green:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(42, 157, 143, 0.5);
+      color: white;
+    }
+
+    .btn-red {
+      background: linear-gradient(135deg, var(--rust) 0%, #c64534 100%);
+      color: white;
+      border: none;
+      padding: 15px 30px;
+      border-radius: 15px;
+      font-weight: 600;
+      font-size: 1.1rem;
+      transition: all 0.3s ease;
+      box-shadow: 0 6px 20px rgba(231, 111, 81, 0.4);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-red::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      background: rgba(255,255,255,0.2);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      transition: all 0.3s ease;
+    }
+
+    .btn-red:hover::before {
+      width: 300px;
+      height: 300px;
+    }
+
+    .btn-red:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(231, 111, 81, 0.5);
+      color: white;
+    }
+
+    .address-radio {
+      width: 20px;
+      height: 20px;
+      accent-color: var(--teal);
+    }
+
+    .section-divider {
+      border: none;
+      height: 3px;
+      background: var(--gradient-primary);
+      margin: 30px 0;
+      border-radius: 3px;
+      box-shadow: 0 2px 10px rgba(42, 157, 143, 0.3);
+    }
+
+    /* Enhanced Animations */
+    @keyframes fadeInUp {
+      from { 
+        opacity: 0; 
+        transform: translateY(30px); 
+      }
+      to { 
+        opacity: 1; 
+        transform: translateY(0); 
+      }
+    }
+
+    @keyframes slideDown {
+      from { 
+        opacity: 0; 
+        transform: translateY(-20px); 
+      }
+      to { 
+        opacity: 1; 
+        transform: translateY(0); 
+      }
+    }
+
+    @keyframes rotate {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    /* Responsive Enhancements */
+    @media (max-width: 768px) {
+      .container {
+        padding: 20px 10px;
+      }
+      
+      .form-section, .order-summary {
+        padding: 25px;
+      }
+      
+      .saved-addresses {
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="text-center mb-4 fw-semibold" style="font-size: 1.1rem;">
+        <span>🛒 Cart</span>
+        <span class="mx-2">→</span>
+        <span class="text-success fw-bold">🚚 Delivery</span>
+        <span class="mx-2">→</span>
+        <span>💳 Payment</span>
+    </div>
+    
+    <a href="cart.html" class="back-link">
+      ← Back to Cart
+    </a>
+    
+    <div class="row g-5">
+      <!-- Shipping Form -->
+      <div class="col-lg-7">
+        <div class="form-section">
+          <h4 class="section-title">Choose Shipping Address</h4>
+          
+          <!-- Saved Addresses Section -->
+          <div class="saved-addresses">
+            <h5 class="mb-4">📍 Saved Addresses</h5>
+            
+            <div class="address-card" onclick="selectAddress(this, 'home')">
+            <div class="d-flex align-items-center justify-content-between mb-2">
+                <div class="d-flex align-items-center">
+                <input type="radio" name="addressChoice" value="home" class="address-radio me-3">
+                <strong class="me-2">Hrishikesh</strong>
+                </div>
+                <span class="address-type">🏠 HOME</span>
+            </div>
+            <div class="address-content mt-2">
+                <strong>📞 Phone:</strong> +91 98765 43210<br>
+                <strong>📍 Address:</strong> 123 Green Valley Apartments, MG Road, Bangalore, Karnataka - 560001
+            </div>
+            </div>
+
+            <div class="address-card" onclick="selectAddress(this, 'office')">
+            <div class="d-flex align-items-center justify-content-between mb-2">
+                <div class="d-flex align-items-center">
+                <input type="radio" name="addressChoice" value="office" class="address-radio me-3">
+                <strong class="me-2">Hrishikesh</strong>
+                </div>
+                <span class="address-type">🏢 OFFICE</span>
+            </div>
+            <div class="address-content mt-2">
+                <strong>📞 Phone:</strong> +91 98765 43210<br>
+                <strong>📍 Address:</strong> Manyata Tech Park Building, Whitefield Phase 1, Bangalore, Karnataka - 560100
+            </div>
+            </div>
+
+            <div class="text-center mt-4">
+              <button class="add-new-toggle" onclick="toggleNewAddressForm()">
+                ➕ Add New Address
+              </button>
+            </div>
+          </div>
+
+          <hr class="section-divider">
+
+          <!-- New Address Form -->
+          <div id="new-address-form" class="new-address-form" style="display: none;">
+            <h5 class="mb-4">📝 Add New Shipping Address</h5>
+            <form id="shipping-form">
+              <div class="row g-4">
+                <div class="col-md-12">
+                  <input type="text" class="form-control" placeholder="🏢 Company's Name (Optional)">
+                </div>
+                <div class="col-md-6">
+                  <input type="text" class="form-control" id="name" placeholder="👤 Full Name" required>
+                </div>
+                <div class="col-md-6">
+                  <input type="tel" class="form-control" id="phone" placeholder="📞 Phone Number" required>
+                </div>
+                <div class="col-md-6">
+                  <input type="text" class="form-control" id="pincode" placeholder="📮 Pincode" required>
+                </div>
+                <div class="col-md-6">
+                  <input type="text" class="form-control" id="city" placeholder="🏙️ City/District/Town" required>
+                </div>
+                <div class="col-md-12">
+                  <input type="text" class="form-control" id="address" placeholder="🏠 Address (Area and Street)" required>
+                </div>
+                <div class="col-md-6">
+                  <input type="text" class="form-control" id="state" placeholder="🗺️ State" required>
+                </div>
+                <div class="col-md-6 d-flex align-items-center">
+                  <div>
+                    <input class="form-check-input me-2" type="checkbox" checked>
+                    <label class="form-check-label">Same as Billing Address</label>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+
+          <button type="button" class="btn btn-green mt-4 w-100" onclick="saveAndContinue()">
+            💾 Save and Deliver Here
+          </button>
+        </div>
+      </div>
+
+      <!-- Order Summary -->
+      <div class="col-lg-5">
+        <div class="order-summary">
+          <h5 class="mb-4">📋 Order Summary</h5>
+          
+          <div class="d-flex justify-content-between mb-2">
+            <span>Items (<span id="item-count">0</span>)</span>
+            <span id="order-total">Rs. 0</span>
+          </div>
+          <div class="d-flex justify-content-between mb-2">
+            <span><s>Original Price</s></span>
+            <span><s id="original-price">Rs. 0</s></span>
+          </div>
+          <div class="d-flex justify-content-between text-success mb-2">
+            <span>Store Discount</span>
+            <span id="store-discount">-Rs. 0</span>
+          </div>
+          <div class="d-flex justify-content-between text-success mb-3 d-none" id="discount-row">
+            <span>Coupon Discount</span>
+            <span id="discount-amount">-Rs. 0</span>
+          </div>
+
+          <div class="delivery-options">
+            <label class="form-label fw-bold mb-3">🚚 Delivery Options:</label>
+            <div class="delivery-option" onclick="selectDeliveryOption('standard')">
+              <input type="radio" name="deliveryOption" id="standard" value="standard" checked>
+              <label for="standard" class="mb-0">📦 Standard Delivery (Rs. 120)</label>
+            </div>
+            <div class="delivery-option" onclick="selectDeliveryOption('express')">
+              <input type="radio" name="deliveryOption" id="express" value="express">
+              <label for="express" class="mb-0">⚡ Express Delivery (Rs. 250)</label>
+            </div>
+          </div>
+
+          <div class="d-flex justify-content-between mb-3">
+            <span>Delivery Charges</span>
+            <span id="delivery-charge">Rs. 120</span>
+          </div>
+
+          <div class="coupon-box">
+            <label for="coupon" class="form-label fw-bold mb-3">🎫 Have a coupon?</label>
+            <div class="input-group">
+              <input type="text" class="form-control" id="coupon" placeholder="Enter coupon code">
+              <button class="btn" onclick="applyCoupon()">Apply</button>
+            </div>
+            <small id="coupon-msg" class="text-success d-block mt-2"></small>
+          </div>
+
+          <hr class="section-divider">
+          
+          <h6 class="mb-3 fw-bold">📅 Delivery Summary</h6>
+          <div class="delivery-box">
+            <p class="mb-2"><strong>Method:</strong> <span id="delivery-method">📦 Standard Delivery</span></p>
+            <p class="mb-0"><strong>Estimated Arrival:</strong> <span id="delivery-date">21 May, 2025</span></p>
+          </div>
+          
+          <div class="d-flex justify-content-between fw-bold mb-4" style="font-size: 1.2rem;">
+            <span>💰 Total Payable</span>
+            <span id="total-payable">Rs. 0</span>
+          </div>
+          
+          <button class="btn btn-red w-100" onclick="placeOrder()">
+            💲 Proceed to Payment
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+  const productData = JSON.parse(localStorage.getItem("directBuy")) || [];
+  let subtotal = 0;
+  let couponDiscount = 0;
+  let storeDiscount = 0;
+  let selectedAddress = null;
+
+  const savedAddresses = {
+    home: {
+      name: "Hrishi",
+      phone: "+91 98765 43210",
+      address: "123 Green Valley Apartments, MG Road, Bangalore, Karnataka - 560001",
+      type: "HOME"
+    },
+    office: {
+      name: "Hrishi",
+      phone: "+91 98765 43210",
+      address: "Manyata Tech Park Building, Whitefield Phase 1, Bangalore, Karnataka - 560100",
+      type: "OFFICE"
+    }
+  };
+
+  function selectAddress(element, addressKey) {
+    document.querySelectorAll('.address-card').forEach(card => card.classList.remove('selected'));
+    element.classList.add('selected');
+    element.querySelector('input[type="radio"]').checked = true;
+    selectedAddress = addressKey;
+    document.getElementById('new-address-form').style.display = 'none';
+    document.querySelector('.add-new-toggle').innerHTML = '➕ Add New Address';
+  }
+
+  function selectDeliveryOption(option) {
+    document.getElementById(option).checked = true;
+    calculateTotal();
+  }
+
+  function toggleNewAddressForm() {
+    const form = document.getElementById('new-address-form');
+    const button = document.querySelector('.add-new-toggle');
+    if (form.style.display === 'none') {
+      form.style.display = 'block';
+      button.innerHTML = '❌ Cancel';
+      document.querySelectorAll('.address-card').forEach(card => card.classList.remove('selected'));
+      document.querySelectorAll('input[name="addressChoice"]').forEach(radio => radio.checked = false);
+      selectedAddress = 'new';
+    } else {
+      form.style.display = 'none';
+      button.innerHTML = '➕ Add New Address';
+      selectedAddress = null;
+    }
+  }
+
+  function calculateTotal() {
+    let cart = [];
+    const directBuy = JSON.parse(localStorage.getItem("directBuy"));
+    if (directBuy && directBuy.length > 0) {
+      cart = directBuy;
+    } else {
+      cart = JSON.parse(localStorage.getItem("cart")) || [];
+    }
+
+    subtotal = 0;
+    let itemCount = 0;
+
+    cart.forEach(item => {
+      const price = parseFloat(item.price.replace(/[^0-9.]/g, "")) || 0;
+      subtotal += price * item.quantity;
+      itemCount += item.quantity;
+    });
+
+    const originalPrice = subtotal * 1.2;
+    storeDiscount = originalPrice - subtotal;
+
+    const isExpress = document.getElementById("express").checked;
+    const deliveryFee = isExpress ? 250 : 120;
+    const methodText = isExpress ? "⚡ Express Delivery" : "📦 Standard Delivery";
+
+    const total = subtotal + deliveryFee - couponDiscount;
+
+    document.getElementById("item-count").innerText = itemCount;
+    document.getElementById("original-price").innerText = `Rs. ${originalPrice.toFixed(2)}`;
+    document.getElementById("order-total").innerText = `Rs. ${subtotal.toFixed(2)}`;
+    document.getElementById("store-discount").innerText = `-Rs. ${storeDiscount.toFixed(2)}`;
+    document.getElementById("delivery-charge").innerText = `Rs. ${deliveryFee}`;
+    document.getElementById("delivery-method").innerText = methodText;
+    document.getElementById("total-payable").innerText = `Rs. ${total.toFixed(2)}`;
+
+    const discountRow = document.getElementById("discount-row");
+    const discountAmount = document.getElementById("discount-amount");
+
+    if (couponDiscount > 0) {
+      discountRow.classList.remove("d-none");
+      discountAmount.innerText = `-Rs. ${couponDiscount.toFixed(2)}`;
+    } else {
+      discountRow.classList.add("d-none");
+    }
+
+    const today = new Date();
+    const daysToAdd = isExpress ? 2 : Math.floor(Math.random() * 6) + 5;
+    today.setDate(today.getDate() + daysToAdd);
+    const deliveryDate = today.toLocaleDateString('en-IN', {
+      day: '2-digit', month: 'long', year: 'numeric'
+    });
+    document.getElementById("delivery-date").textContent = deliveryDate;
+  }
+
+  function applyCoupon() {
+    const code = document.getElementById("coupon").value.trim();
+    const msg = document.getElementById("coupon-msg");
+    if (code === "SAVE20") {
+      couponDiscount = subtotal * 0.2;
+      msg.textContent = "Coupon applied! 20% discount added.";
+      msg.classList.remove("text-danger");
+      msg.classList.add("text-success");
+    } else {
+      couponDiscount = 0;
+      msg.textContent = "Invalid coupon code.";
+      msg.classList.remove("text-success");
+      msg.classList.add("text-danger");
+    }
+    calculateTotal();
+  }
+
+  function saveAndContinue() {
+    if (!selectedAddress) {
+      alert("Please select a delivery address or add a new one.");
+      return;
+    }
+
+    let addressData = {};
+
+    if (selectedAddress === 'new') {
+      const form = document.getElementById("shipping-form");
+      if (!form.checkValidity()) {
+        form.reportValidity();
+        return;
+      }
+
+      addressData = {
+        name: document.getElementById("name").value,
+        phone: document.getElementById("phone").value,
+        street: document.getElementById("address").value,
+        city: document.getElementById("city").value,
+        state: document.getElementById("state").value,
+        zip: document.getElementById("pincode").value
+      };
+    } else {
+      const saved = savedAddresses[selectedAddress];
+      addressData = {
+        name: saved.name,
+        phone: saved.phone,
+        street: saved.address.split(',')[0] || '',
+        city: 'Bangalore',
+        state: 'Karnataka',
+        zip: saved.address.match(/\d{6}/)?.[0] || ''
+      };
+    }
+
+    localStorage.setItem("shippingAddress", JSON.stringify(addressData));
+
+    const isExpress = document.getElementById("express").checked;
+    const deliveryDays = isExpress ? 2 : Math.floor(Math.random() * 5) + 3;
+    const deliveryDate = new Date(Date.now() + deliveryDays * 24 * 60 * 60 * 1000);
+    const formattedDate = deliveryDate.toLocaleDateString('en-IN', {
+      day: '2-digit', month: 'long', year: 'numeric'
+    });
+
+    const deliveryInfo = {
+      date: formattedDate,
+      time: "6:00 PM",
+      method: isExpress ? "Express" : "Standard"
+    };
+
+    localStorage.setItem("deliveryInfo", JSON.stringify(deliveryInfo));
+
+    // Save cartItems to be used by thankyou.html
+    const cartData = JSON.parse(localStorage.getItem("directBuy")) || JSON.parse(localStorage.getItem("cart")) || [];
+    localStorage.setItem("cartItems", JSON.stringify(cartData));
+
+    alert("Address saved! Proceeding to payment...");
+    localStorage.removeItem("directBuy");
+    window.location.href = "payment.html";
+  }
+
+  function placeOrder() {
+    if (!selectedAddress) {
+      alert("Please select a delivery address first.");
+      return;
+    }
+    localStorage.removeItem("directBuy");
+    window.location.href = "payment.html";
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    calculateTotal();
+    document.querySelectorAll('input[name="deliveryOption"]').forEach(option => {
+      option.addEventListener('change', calculateTotal);
+    });
+  });
+
+  </script>
+</body>
+</html>

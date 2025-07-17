@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thank You - Order Confirmed</title>
+    <style>
+        :root {
+            --deep-teal: #264653;
+            --teal: #2a9d8f;
+            --sand: #e9c46a;
+            --orange: #f4a261;
+            --rust: #e76f51;
+            --light-teal: rgba(42, 157, 143, 0.1);
+            --gradient-primary: linear-gradient(135deg, var(--teal) 0%, var(--deep-teal) 100%);
+        }
+
+        body {
+            background: linear-gradient(135deg, #f1f3f4 0%, #e8eaf6 50%, #f3e5f5 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 40px 20px;
+            margin: 0;
+            min-height: 100vh;
+        }
+
+        .container-box {
+            max-width: 800px;
+            margin: auto;
+            background: linear-gradient(135deg, rgba(255,255,255,0.95), rgba(255,255,255,0.9));
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 8px 25px rgba(42, 157, 143, 0.15);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .success-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #28a745, #20c997);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 30px;
+            animation: scaleIn 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        .success-icon::after {
+            content: '✓';
+            color: white;
+            font-size: 40px;
+            font-weight: bold;
+        }
+
+        @keyframes scaleIn {
+            0% { transform: scale(0) rotate(-180deg); }
+            100% { transform: scale(1) rotate(0deg); }
+        }
+
+        .thank-you-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: var(--gradient-primary);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+            animation: fadeInUp 0.8s ease-out 0.3s both;
+        }
+
+        .thank-you-subtitle {
+            font-size: 1.2rem;
+            color: #6c757d;
+            margin-bottom: 40px;
+            animation: fadeInUp 0.8s ease-out 0.5s both;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .order-details {
+            background: rgba(42, 157, 143, 0.05);
+            border: 2px solid rgba(42, 157, 143, 0.2);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            text-align: left;
+            animation: slideInLeft 0.8s ease-out 0.7s both;
+        }
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .order-number {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .order-number strong {
+            font-size: 1.1rem;
+            color: var(--deep-teal);
+            background: rgba(42, 157, 143, 0.1);
+            padding: 8px 16px;
+            border-radius: 20px;
+            border: 1px solid rgba(42, 157, 143, 0.3);
+        }
+
+        .section-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--deep-teal);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+
+        .section-title::before {
+            content: '';
+            width: 4px;
+            height: 20px;
+            background: var(--gradient-primary);
+            border-radius: 2px;
+            margin-right: 10px;
+        }
+
+        .product-list {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .product-item {
+            padding: 12px 0;
+            border-bottom: 1px solid #f0f0f0;
+            font-size: 1rem;
+            color: #495057;
+        }
+
+        .product-item:last-child {
+            border-bottom: none;
+        }
+
+        .product-item::before {
+            content: '•';
+            color: var(--teal);
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        .delivery-info {
+            background: linear-gradient(135deg, rgba(233, 196, 106, 0.1), rgba(244, 162, 97, 0.1));
+            border: 2px solid rgba(233, 196, 106, 0.3);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 25px;
+            font-size: 1rem;
+            color: #495057;
+            line-height: 1.6;
+        }
+
+        .delivery-info strong {
+            color: var(--deep-teal);
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 40px;
+            animation: fadeInUp 0.8s ease-out 1s both;
+        }
+
+        .btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-primary {
+            background: var(--gradient-primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(42, 157, 143, 0.4);
+        }
+
+        .btn-secondary {
+            background: rgba(42, 157, 143, 0.1);
+            color: var(--deep-teal);
+            border: 2px solid rgba(42, 157, 143, 0.3);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(42, 157, 143, 0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(42, 157, 143, 0.2);
+        }
+
+        .confetti {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+
+        .confetti-1 { 
+            background: var(--sand); 
+            left: 10%; 
+            top: -10px;
+            animation: confetti-fall 4s ease-out infinite; 
+        }
+        .confetti-2 { 
+            background: var(--orange); 
+            left: 30%; 
+            top: -10px;
+            animation: confetti-fall 4s ease-out 0.5s infinite; 
+        }
+        .confetti-3 { 
+            background: var(--rust); 
+            left: 70%; 
+            top: -10px;
+            animation: confetti-fall 4s ease-out 1s infinite; 
+        }
+        .confetti-4 { 
+            background: var(--teal); 
+            left: 90%; 
+            top: -10px;
+            animation: confetti-fall 4s ease-out 1.5s infinite; 
+        }
+
+        @keyframes confetti-fall {
+            0% { 
+                transform: translateY(-20px) rotate(0deg); 
+                opacity: 1; 
+            }
+            100% { 
+                transform: translateY(600px) rotate(720deg); 
+                opacity: 0; 
+            }
+        }
+
+        .footer-note {
+            margin-top: 40px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 12px;
+            font-size: 0.9rem;
+            color: #6c757d;
+            animation: fadeIn 1s ease-out 1.2s both;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @media (max-width: 768px) {
+            .container-box {
+                padding: 30px 20px;
+            }
+            
+            .thank-you-title {
+                font-size: 2rem;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .btn {
+                width: 100%;
+                max-width: 300px;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container-box">
+        <!-- Confetti Animation -->
+        <div class="confetti confetti-1"></div>
+        <div class="confetti confetti-2"></div>
+        <div class="confetti confetti-3"></div>
+        <div class="confetti confetti-4"></div>
+        
+        <!-- Success Icon -->
+        <div class="success-icon"></div>
+        
+        <!-- Main Title -->
+        <h1 class="thank-you-title">Thank You for Your Order!</h1>
+        <p class="thank-you-subtitle">Your order has been successfully placed and confirmed.</p>
+        
+        <!-- Order Details Section -->
+        <div class="order-details">
+            <div class="order-number">
+                <strong id="generatedOrderNumber">Order #</strong>
+            </div>
+            
+            <!-- Order Summary -->
+            <div class="section-title">📦 Order Summary</div>
+            <div class="product-list" id="productList">
+                <!-- Products will be loaded from localStorage -->
+            </div>
+            
+            <!-- Delivery Information -->
+            <div class="section-title">🚚 Delivery Information</div>
+            <div class="delivery-info" id="deliveryInfo">
+                <!-- Delivery info will be loaded from localStorage -->
+            </div>
+        </div>
+        
+        <!-- Action Buttons -->
+        <div class="action-buttons">
+            <button class="btn btn-primary" onclick="trackOrder()">
+                📱 Track Your Package
+            </button>
+            <button class="btn btn-secondary" onclick="continueShopping()">
+                🛍️ Continue Shopping
+            </button>
+        </div>
+        
+        <!-- Footer Information -->
+        <div class="footer-note">
+            <p><strong>What's Next?</strong></p>
+            <p>• You'll receive an email confirmation shortly with your order details</p>
+            <p>• We'll send you tracking information once your order ships</p>
+            <p>• Need help? Contact our customer support at <strong>support@example.com</strong> or <strong>(555) 123-4567</strong></p>
+        </div>
+    </div>
+
+    <script>
+        // Generate random order number
+        function generateOrderNumber() {
+            const prefix = 'TY' + new Date().getFullYear();
+            const randomNum = Math.floor(Math.random() * 9000000) + 1000000; // 7-digit number
+            return `${prefix}-${randomNum}`;
+        }
+
+        // Load data from localStorage
+        function loadOrderData() {
+            try {
+                // Generate and display order number
+                const orderNumber = generateOrderNumber();
+                document.getElementById('generatedOrderNumber').textContent = `Order #${orderNumber}`;
+
+                // Load cart items
+                const cartItems = JSON.parse(localStorage.getItem('cartItems') || '[]');
+                const productList = document.getElementById('productList');
+                
+                if (cartItems.length > 0) {
+                    productList.innerHTML = '';
+                    cartItems.forEach(item => {
+                        const productItem = document.createElement('div');
+                        productItem.className = 'product-item';
+                        // Handle different possible data structures
+                        const productName = item.name || item.title || item.product || 'Unknown Product';
+                        const quantity = item.quantity || 1;
+                        productItem.textContent = quantity > 1 ? `${productName} (Qty: ${quantity})` : productName;
+                        productList.appendChild(productItem);
+                    });
+                } else {
+                    // Fallback if no cart data
+                    productList.innerHTML = '<div class="product-item">No items found in cart</div>';
+                }
+
+                // Load shipping address
+                const shippingAddress = JSON.parse(localStorage.getItem('shippingAddress') || '{}');
+                const deliveryInfo = JSON.parse(localStorage.getItem('deliveryInfo') || '{}');
+                const deliveryInfoElement = document.getElementById('deliveryInfo');
+                
+                // Build delivery information string
+                let deliveryText = 'Your order will be delivered to ';
+                
+                if (shippingAddress.street || shippingAddress.address) {
+                    const address = shippingAddress.street || shippingAddress.address;
+                    const city = shippingAddress.city || '';
+                    const state = shippingAddress.state || '';
+                    const zip = shippingAddress.zip || shippingAddress.zipCode || '';
+                    
+                    deliveryText += `<strong>${address}`;
+                    if (city || state || zip) {
+                        deliveryText += `, ${city}${state ? ', ' + state : ''}${zip ? ' ' + zip : ''}`;
+                    }
+                    deliveryText += '</strong>';
+                } else {
+                    deliveryText += '<strong>your specified address</strong>';
+                }
+                
+                // Add delivery date and time
+                if (deliveryInfo.date || deliveryInfo.deliveryDate) {
+                    const deliveryDate = deliveryInfo.date || deliveryInfo.deliveryDate;
+                    deliveryText += ` on <strong>${deliveryDate}</strong>`;
+                } else {
+                    // Generate a delivery date (3-7 days from now)
+                    const today = new Date();
+                    const deliveryDays = Math.floor(Math.random() * 5) + 3; // 3-7 days
+                    const deliveryDate = new Date(today.getTime() + deliveryDays * 24 * 60 * 60 * 1000);
+                    const options = { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' };
+                    deliveryText += ` on <strong>${deliveryDate.toLocaleDateString('en-US', options)}</strong>`;
+                }
+                
+                if (deliveryInfo.time || deliveryInfo.deliveryTime) {
+                    const deliveryTime = deliveryInfo.time || deliveryInfo.deliveryTime;
+                    deliveryText += ` before <strong>${deliveryTime}</strong>`;
+                } else {
+                    deliveryText += ' before <strong>6:00 PM</strong>';
+                }
+                
+                deliveryText += '.';
+                deliveryInfoElement.innerHTML = deliveryText;
+
+            } catch (error) {
+                console.error('Error loading order data:', error);
+                // Fallback to default content if localStorage fails
+                document.getElementById('productList').innerHTML = '<div class="product-item">Error loading cart items</div>';
+                document.getElementById('deliveryInfo').innerHTML = 'Error loading delivery information. Please contact customer support.';
+            }
+        }
+
+        function trackOrder() {
+            const orderNumber = document.getElementById('generatedOrderNumber').textContent;
+            // Simulate tracking functionality
+            alert(`Redirecting to order tracking page...\n\n${orderNumber}\nStatus: Processing\nEstimated delivery: May 31st, 2025`);
+        }
+        
+        function continueShopping() {
+            // Simulate redirect to shopping
+            alert('Redirecting to our store...\n\nThank you for shopping with us!');
+            window.location.href = "homepage.html";
+        }
+        
+        // Load data when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            loadOrderData();
+            
+            // Add click animation to success icon
+            const successIcon = document.querySelector('.success-icon');
+            successIcon.addEventListener('click', function() {
+                this.style.animation = 'none';
+                setTimeout(() => {
+                    this.style.animation = 'scaleIn 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55)';
+                }, 10);
+            });
+            
+            // Add pulse effect to confetti on scroll
+            window.addEventListener('scroll', function() {
+                const confetti = document.querySelectorAll('.confetti');
+                confetti.forEach(conf => {
+                    conf.style.animationDuration = '3s';
+                });
+            });
+        });
+        
+        document.addEventListener('DOMContentLoaded', function() {
+    loadOrderData();
+
+    // Clear sensitive/order-related data after display
+    setTimeout(() => {
+      localStorage.removeItem("cartItems");
+      localStorage.removeItem("shippingAddress");
+      localStorage.removeItem("deliveryInfo");
+      localStorage.removeItem("directBuy");
+      localStorage.removeItem("cart");
+    }, 1000);
+
+    const successIcon = document.querySelector('.success-icon');
+    successIcon.addEventListener('click', function() {
+        this.style.animation = 'none';
+        setTimeout(() => {
+            this.style.animation = 'scaleIn 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55)';
+        }, 10);
+    });
+
+    window.addEventListener('scroll', function() {
+        const confetti = document.querySelectorAll('.confetti');
+        confetti.forEach(conf => {
+            conf.style.animationDuration = '3s';
+        });
+    });
+});
+
+    </script>
+</body>
+</html>

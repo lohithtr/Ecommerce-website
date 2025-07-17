@@ -1,0 +1,909 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Decor Category</title>
+  <link rel="icon" href="../Images/decorlogo.png">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    /* Full-page background image */
+.background-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('../Images/decorbanner'); /* Replace with your image path */
+  background-size: cover;
+  background-position: center;
+  opacity: 0.3; /* Controls translucency */
+  z-index: -1;  /* Places it behind content */
+}
+    body {
+        background: linear-gradient(135deg, #f0f0f0, #ffffff);
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 30px;
+  background: #fff;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.452);
+  position: relative;
+}
+
+.nav-left,
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.nav-title {
+  position: absolute;
+  left: 48%;
+  transform: translateX(-50%);
+  font-size: 20px;
+  font-weight: 600;
+  color: #333;
+  white-space: nowrap;
+}
+
+.home-link {
+  font-size: 22px;
+  color: #333;
+  text-decoration: none;
+}
+
+.home-link:hover {
+  color: #000;
+}
+
+.search-box {
+  flex-grow: 1;
+  margin-right: 20px;
+}
+
+.search-box input {
+  width: 100%;
+  padding: 8px 15px;
+  border: 2px solid #ddd;
+  border-radius: 25px;
+}
+
+.icon-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.wishlist-icon {
+  position: absolute;
+  top: 12px;
+  right: 15px;
+  background: white;
+  border-radius: 50%;
+  padding: 5px;
+  cursor: pointer;
+  color: gray;
+  transition: color 0.3s ease;
+}
+
+.wishlist-icon.active {
+  color: red;
+}
+
+
+.cart-icon-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.cart-count {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  background: red;
+  color: white;
+  font-size: 12px;
+  width: 18px;
+  height: 18px;
+  text-align: center;
+  line-height: 18px;
+  border-radius: 50%;
+}
+
+
+    .carousel-inner {
+      height: 600px;
+      border: 2px solid black;
+      border-radius: 5px;
+      overflow: hidden;
+      margin: 20px 0;
+    }
+    
+    .carousel-inner img {
+    object-fit: cover;
+    height: 100%;
+    width: 100%;
+    }
+    /* .carousel-inner {
+  height: 800px;
+  width: 1300px;
+} */
+
+/* .carousel-img {
+  height: 100%;
+  object-fit: cover;
+} */
+
+.carousel-caption {
+  position: absolute;           /* stays on top of image */
+  bottom: 30%;                  /* vertical position from bottom */
+  left: 50%;                    /* horizontal position */
+  transform: translateX(-50%);  /* center it horizontally */
+  background: rgba(0, 0, 0, 0.5); /* dark transparent background */
+  padding: 20px 30px;
+  border-radius: 20px;
+  width: 30%;                   /* width of the caption box */
+  text-align: center;
+}
+
+.carousel-caption h2,
+.carousel-caption p {
+  color: #fff;
+}
+
+/* @media (max-width: 768px) {
+  .carousel-inner {
+    height: 250px;
+  }
+  .carousel-caption {
+    padding: 40px;
+  }
+  .carousel-caption h2 {
+    font-size: 1.2rem;
+  }
+  .carousel-caption p {
+    font-size: 0.9rem;
+  }
+} */
+
+  .sort-filter-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.sort-filter-container label {
+  font-weight: 500;
+}
+
+.sort-filter-container select {
+  padding: 5px 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.products-section {
+    padding: 3px 50px;
+}
+.product-card {
+    border: 2px solid black;
+    border-radius: 10px;
+    padding: 10px;
+    text-align: center;
+    background-color: #fff;
+    box-shadow: 2px 2px 10px rgba(0,0,0,0.05);
+    transition: transform 0.2s;
+    position: relative;
+}
+.product-name {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-top: 10px;
+  text-align: left;
+  color: #333;
+}
+
+.product-rating {
+  margin-top: 5px;
+  font-size: 0.9rem;
+  color: #777;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.product-rating .rating-count {
+  margin-left: 5px;
+  font-size: 0.85rem;
+}
+
+.product-price {
+  font-size: 1rem;
+  font-weight: bold;
+  margin-top: 5px;
+  color: black;
+  text-align: left;
+}
+
+    .product-card:hover {
+      transform: scale(1.02);
+    }
+    .product-card img {
+      width: 100%;
+      height: 230px;
+      object-fit: cover;
+      border-bottom: 1px solid #ddd;
+    }
+    .wishlist-icon {
+      position: absolute;
+      top: 12px;
+      right: 15px;
+      background: white;
+      border-radius: 70%;
+      padding: 5px;
+      cursor: pointer;
+      color: gray;
+    }
+    .wishlist-icon.active {
+      color: red;
+    }
+    .product-details {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 10px;
+    }
+    .buy-btn {
+  background-color: #008080;
+  color: white;
+}
+.cart-btn {
+  border-color: #008080;
+  color: #008080;
+}
+
+    .buy-btn, .cart-btn {
+    padding-top: 8px;
+    padding-bottom: 8px;
+    border-radius: 6px;
+    transition: background-color 0.3s, transform 0.2s ease;
+    font-size: 0.9rem;
+    }
+
+    .buy-btn:hover {
+  background-color: #006666; /* darker teal */
+  transform: translateY(-1px);
+}
+
+.cart-btn:hover {
+  background-color: #e0f5f5; /* soft teal-tinted gray */
+  color: #006666;
+  transform: translateY(-1px);
+}
+
+    footer {
+      background: #343a40;
+      color: white;
+      text-align: center;
+      padding: 20px;
+      margin-top: 50px;
+    }
+    .badge {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: red;
+    color: white;
+    padding: 4px 8px;
+    font-size: 12px;
+    border-radius: 5px;
+  }
+  .badge.new {
+    background: green;
+  }
+
+  .badge.bestseller {
+    background: orange;
+  }
+
+  .popup-notification {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background-color: #006666;
+  color: white;
+  padding: 12px 20px;
+  border-radius: 10px;
+  font-weight: 500;
+  font-size: 16px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+  z-index: 9999;
+}
+
+.popup-notification.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.popup-notification.hide {
+  opacity: 0;
+  transform: translateY(-20px);
+}
+
+.back-to-top {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: #2c3e50;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    z-index: 1000;
+  }
+  
+  .back-to-top.visible {
+    opacity: 1;
+    visibility: visible;
+  }
+  
+  .back-to-top:hover {
+    background-color: #4ca1af;
+    transform: translateY(-5px);
+  }
+
+  .btn-primary {
+  background-color: #008080; /* Your custom color */
+  border-color: #008080;
+}
+
+.btn-primary:hover {
+  background-color: #006666; /* Darker hover shade */
+  border-color: #006666;
+}
+
+
+  </style>
+</head>
+<body>
+    <div id="popup" class="popup-notification">Item added to cart ✅</div>
+
+  <div class="background-overlay"></div>
+
+  <header>
+  <div class="nav-left">
+    <a href="homepage.html" class="home-link">
+      <i class="fas fa-home"></i>
+    </a>
+    <div id="category-logo">
+      <a href="decor.html">
+        <img src="../Images/decorlogo.png" alt="Decor Logo" height="50px">
+      </a>
+    </div>
+  </div>
+
+  <div class="nav-title">
+    <img src="../Images/decortitle.png" alt="" height="70px" width="400px">
+  </div>
+
+  <div class="nav-right">
+    <div class="search-box">
+      <div class="position-relative">
+        <input type="text" placeholder="Search..." id="searchInput" class="form-control pe-5" style="padding-right: 30px;">
+        <span id="clearSearch" style="position:absolute; right:15px; top:50%; transform:translateY(-50%); cursor:pointer; display:none;">&times;</span>
+      </div>
+    </div>
+    <div class="icon-wrapper">
+    <a href="wishlist.html" class="wishlist-icon-wrapper me-3">
+        <i class="fas fa-heart"></i>
+    </a>
+    <a href="cart.html" class="cart-icon-wrapper">
+        <i class="fas fa-shopping-cart"></i>
+        <span class="cart-count" id="cart-count">0</span>
+    </a>
+    </div>
+
+
+      <!-- <span class="cart-icon-wrapper">
+        <i class="fas fa-shopping-cart"></i>
+        <span class="cart-count" id="cart-count">0</span>
+      </span> -->
+    </div>
+  </div>
+</header>
+
+    <div id="heroCarousel" class="carousel slide" data-bs-ride="carousel">
+  <div class="carousel-inner">
+    <div class="carousel-item active">
+      <img src="../Images/decorbanner" class="d-block w-100 carousel-img" alt="...">
+      <div class="carousel-caption d-none d-md-block">
+        <h2>Discover Great Deals</h2>
+        <p>Shop your favorite products now</p>
+        <a href="#products" class="btn btn-primary">Explore Now</a>
+      </div>
+    </div>
+    <div class="carousel-item">
+      <img src="../Images/decorbanner1.jpg" class="d-block w-100 carousel-img" alt="...">
+      <div class="carousel-caption d-none d-md-block">
+        <h2>Weekend Offers</h2>
+        <p>Check out the weekend collections</p>
+        <a href="#products" class="btn btn-light text-dark">Shop Now</a>
+      </div>
+    </div>
+    <div class="carousel-item">
+      <img src="../Images/decorbanner2.jpg" class="d-block w-100 carousel-img" alt="...">
+      <div class="carousel-caption d-none d-md-block">
+        <h2>New Arrivals</h2>
+        <p>Check out the latest collections</p>
+        <a href="#products" class="btn btn-light text-dark">Shop Now</a>
+      </div>
+    </div>
+    <div class="carousel-item">
+      <img src="../Images/decorbanner6.jpg" class="d-block w-100 carousel-img" alt="...">
+      <div class="carousel-caption d-none d-md-block">
+        <h2>Limited Edition</h2>
+        <p>Check out the limited edition collections</p>
+        <a href="#products" class="btn btn-light text-dark">Shop Now</a>
+      </div>
+    </div>
+    <!-- Add more carousel items if needed -->
+  </div>
+
+  <!-- Controls -->
+  <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon"></span>
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
+    <span class="carousel-control-next-icon"></span>
+  </button>
+</div>
+
+    <div class="products-section">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+    <h3 class="mb-4">Products</h3>
+
+    <!-- ✅ Sort Options -->
+    <div class="sort-filter-container">
+      <label for="sort-by">Sort by:</label>
+      <select id="sort-by">
+        <option value="popularity">Popularity</option>
+        <option value="price-low">Price: Low to High</option>
+        <option value="newest">Newest First</option>
+        <option value="ratings">Customer Ratings</option>
+        <option value="discount">Discount %</option>
+      </select>
+    </div>
+  </div>
+      
+      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+        
+        <!-- Repeat for 6 products -->
+        <div class="col">
+          <div class="product-card">
+  <div class="wishlist-icon"><i class="fas fa-heart"></i></div>
+        <div class="badge bestseller">Bestseller</div>
+        <img src="../Images/decor.jpeg" alt="Product Image">
+
+        <div class="product-name">Combo Vase</div>
+
+        <div class="product-rating">
+            <i class="fas fa-star text-warning"></i>
+            <i class="fas fa-star text-warning"></i>
+            <i class="fas fa-star text-warning"></i>
+            <i class="fas fa-star text-warning"></i>
+            <i class="fas fa-star-half-alt text-warning"></i>
+            <span class="rating-count text-muted">(2134)</span>
+        </div>
+
+        <div class="product-price">₹1,649.99</div>
+
+        <div class="d-flex gap-2 mt-2">
+            <button class="btn btn-sm btn-primary buy-btn w-100">Buy</button>
+            <button class="btn btn-sm btn-outline-secondary cart-btn w-100">Cart</button>
+        </div>
+        </div>
+
+        </div>
+        <div class="col">
+          <div class="product-card">
+            <div class="wishlist-icon"><i class="fas fa-heart"></i></div>
+            <div class="badge">50% OFF</div>
+            <img src="../Images/decor1.jpeg" alt="Product Image">
+            <div class="product-name">Hexagon Wall Patches</div>
+            <div class="product-rating">
+                <i class="fas fa-star text-warning"></i>
+                <i class="fas fa-star text-warning"></i>
+                <i class="fas fa-star text-warning"></i>
+                <i class="fas fa-star text-warning"></i>
+                <i class="far fa-star text-warning"></i>
+                <span class="rating-count text-muted">(158)</span>
+            </div>
+            <div class="product-price">₹1,259.99</div>
+
+            <div class="d-flex gap-2 mt-2">
+                <button class="btn btn-sm btn-primary buy-btn w-100">Buy</button>
+              <button class="btn btn-sm btn-outline-secondary cart-btn w-100">Cart</button>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="product-card">
+            <div class="wishlist-icon"><i class="fas fa-heart"></i></div>
+            <div class="badge new">NEW</div>
+            <img src="../Images/decor2.jpg" alt="Product Image">
+            <div class="product-name">Nature Oil Painting</div>
+            <div class="product-rating">
+                <i class="fas fa-star text-warning"></i>
+                <i class="fas fa-star text-warning"></i>
+                <i class="fas fa-star text-warning"></i>
+                <i class="fas fa-star text-warning"></i>
+                <i class="fas fa-star-half-alt text-warning"></i>
+                <span class="rating-count text-muted">(48)</span>
+            </div>
+            <div class="product-price">₹4,999.99</div>
+
+            <div class="d-flex gap-2 mt-2">
+                <button class="btn btn-sm btn-primary buy-btn w-100">Buy</button>
+              <button class="btn btn-sm btn-outline-secondary cart-btn w-100">Cart</button>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="product-card">
+            <div class="wishlist-icon"><i class="fas fa-heart"></i></div>
+            <div class="badge bestseller">Bestseller</div>
+            <img src="../Images/decor4.jpg" alt="Product Image">
+            <div class="product-name">Couple Showpiece</div>
+            <div class="product-rating">
+                <i class="fas fa-star text-warning"></i>
+                <i class="fas fa-star text-warning"></i>
+                <i class="fas fa-star text-warning"></i>
+                <i class="fas fa-star text-warning"></i>
+                <i class="fas fa-star-half-alt text-warning"></i>
+                <span class="rating-count text-muted">(1813)</span>
+            </div>
+            <div class="product-price">₹999.99</div>
+
+            <div class="d-flex gap-2 mt-2">
+                <button class="btn btn-sm btn-primary buy-btn w-100">Buy</button>
+              <button class="btn btn-sm btn-outline-secondary cart-btn w-100">Cart</button>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="product-card">
+            <div class="wishlist-icon"><i class="fas fa-heart"></i></div>
+            <div class="badge">50% OFF</div>
+            <img src="../Images/decor5.jpg" alt="Product Image">
+            <div class="product-name">2-set Doughtnut Vase</div>
+            <div class="product-rating">
+                <i class="fas fa-star text-warning"></i>
+                <i class="fas fa-star text-warning"></i>
+                <i class="fas fa-star text-warning"></i>
+                <i class="fas fa-star-half-alt text-warning"></i>
+                <i class="far fa-star text-warning"></i>
+                <span class="rating-count text-muted">(13)</span>
+            </div>
+            <div class="product-price">₹2,469.99</div>
+
+            <div class="d-flex gap-2 mt-2">
+                <button class="btn btn-sm btn-primary buy-btn w-100">Buy</button>
+              <button class="btn btn-sm btn-outline-secondary cart-btn w-100">Cart</button>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="product-card">
+            <div class="wishlist-icon"><i class="fas fa-heart"></i></div>
+            <div class="badge">LIMITED EDITION</div>
+            <img src="../Images/decor6.jpg" alt="Product Image">
+            <div class="product-name">Antique Wallclock</div>
+            <div class="product-rating">
+                <i class="fas fa-star text-warning"></i>
+                <i class="fas fa-star text-warning"></i>
+                <i class="fas fa-star text-warning"></i>
+                <i class="fas fa-star text-warning"></i>
+                <i class="fas fa-star-half-alt text-warning"></i>
+                <span class="rating-count text-muted">(8)</span>
+            </div>
+            <div class="product-price">₹8,549.99</div>
+
+            <div class="d-flex gap-2 mt-2">
+                <button class="btn btn-sm btn-primary buy-btn w-100">Buy</button>
+              <button class="btn btn-sm btn-outline-secondary cart-btn w-100">Cart</button>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="product-card">
+            <div class="wishlist-icon"><i class="fas fa-heart"></i></div>
+            <div class="badge">50% OFF</div>
+            <img src="../Images/decor7.jpg" alt="Product Image">
+            <div class="product-name">Wall Stand with Vase</div>
+            <div class="product-rating">
+                <i class="fas fa-star text-warning"></i>
+                <i class="fas fa-star text-warning"></i>
+                <i class="fas fa-star text-warning"></i>
+                <i class="fas fa-star text-warning"></i>
+                <i class="fas fa-star-half-alt text-warning"></i>
+                <span class="rating-count text-muted">(613)</span>
+            </div>
+            <div class="product-price">₹649.99</div>
+
+            <div class="d-flex gap-2 mt-2">
+                <button class="btn btn-sm btn-primary buy-btn w-100">Buy</button>
+              <button class="btn btn-sm btn-outline-secondary cart-btn w-100">Cart</button>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="product-card">
+            <div class="wishlist-icon"><i class="fas fa-heart"></i></div>
+            <div class="badge new">NEW</div>
+            <img src="../Images/decor8" alt="Product Image">
+            <div class="product-name">4-Piece Wall Hang</div>
+            <div class="product-rating">
+            <i class="fas fa-star text-warning"></i>
+            <i class="fas fa-star text-warning"></i>
+            <i class="fas fa-star text-warning"></i>
+            <i class="fas fa-star text-warning"></i>
+            <i class="far fa-star text-warning"></i>
+            <span class="rating-count text-muted">(285)</span>
+            </div>
+            <div class="product-price">₹1,499.99</div>
+
+            <div class="d-flex gap-2 mt-2">
+                <button class="btn btn-sm btn-primary buy-btn w-100">Buy</button>
+              <button class="btn btn-sm btn-outline-secondary cart-btn w-100">Cart</button>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Clone above .col for more products -->
+      </div>
+    </div>
+  </div>
+
+<div class="back-to-top" id="backToTop">
+  <i class="fas fa-arrow-up"></i>
+</div>
+
+  <footer>
+    <p>&copy; 2025 Decor Collection Store. All Rights Reserved.</p>
+  </footer>
+
+  <script>
+    //Buy button functionality
+    document.querySelectorAll('.buy-btn').forEach(button => {
+  button.addEventListener('click', (e) => {
+    const productCard = e.target.closest('.product-card');
+    const img = productCard.querySelector('img').src;
+    const title = productCard.querySelector('.product-name')?.textContent.trim();
+    const price = productCard.querySelector('.product-price')?.textContent.trim();
+
+    const product = { img, title, price, quantity: 1 };
+
+    // Save this single product to a separate key in localStorage
+    localStorage.setItem("directBuy", JSON.stringify([product]));
+
+    // Redirect to shipping page
+    window.location.href = "shipping.html"; // ✅ Update if your file has different name/path
+  });
+});
+
+    //Cart button functionality
+    document.querySelectorAll('.cart-btn').forEach(button => {
+  button.addEventListener('click', (e) => {
+    const productCard = e.target.closest('.product-card');
+    const img = productCard.querySelector('img').src;
+    const price = productCard.querySelector('.product-price')?.textContent.trim();
+    const title = productCard.querySelector('.product-name')?.textContent.trim() || 'Shoe Item';
+
+    const product = { img, price, title, quantity: 1 };
+
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+    const existingIndex = cart.findIndex(p => p.title === product.title && p.price === product.price);
+
+    if (existingIndex !== -1) {
+      cart[existingIndex].quantity += 1;
+    } else {
+      cart.push(product);
+    }
+
+    localStorage.setItem("cart", JSON.stringify(cart));
+    document.addEventListener('DOMContentLoaded', () => {
+  const cart = JSON.parse(localStorage.getItem("cart")) || [];
+  document.getElementById('cart-count').innerText = cart.reduce((sum, item) => sum + item.quantity, 0);
+});
+
+    showPopup();
+  });
+});
+
+//wishlist functionality
+document.querySelectorAll('.wishlist-icon').forEach(icon => {
+  const productCard = icon.closest('.product-card');
+  const title = productCard.querySelector('.product-name')?.textContent.trim();
+  const price = productCard.querySelector('.product-price')?.textContent.trim();
+  const img = productCard.querySelector('img').src;
+
+  // Check if already in wishlist
+  const wishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
+  const isInWishlist = wishlist.some(item => item.title === title && item.price === price);
+
+  if (isInWishlist) icon.classList.add('active');
+  else icon.classList.remove('active');
+
+  icon.addEventListener('click', () => {
+    let wishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
+    const index = wishlist.findIndex(item => item.title === title && item.price === price);
+
+    if (index === -1) {
+      wishlist.push({ img, title, price });
+      localStorage.setItem("wishlist", JSON.stringify(wishlist));
+      icon.classList.add('active'); // ✅ instantly turn red
+      showPopup("Item added to wishlist ❤️");
+    } else {
+      wishlist.splice(index, 1);
+      localStorage.setItem("wishlist", JSON.stringify(wishlist));
+      icon.classList.remove('active'); // ✅ instantly turn grey
+      showPopup("Item removed from wishlist 💔");
+    }
+  });
+});
+
+// On load: sync cart count from localStorage
+document.addEventListener('DOMContentLoaded', () => {
+  const cart = JSON.parse(localStorage.getItem("cart")) || [];
+  document.getElementById('cart-count').innerText = cart.length;
+});
+
+function showPopup(message = "Item added to cart ✅") {
+  const popup = document.getElementById('popup');
+  popup.textContent = message;
+  popup.classList.add('show');
+  setTimeout(() => {
+    popup.classList.remove('show');
+  }, 2000); // Visible for 2 seconds
+}
+
+    document.querySelectorAll('.wishlist-icon').forEach(icon => {
+      icon.addEventListener('click', () => {
+        icon.classList.toggle('active');
+      });
+    });
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const sortSelect = document.getElementById("sort-by");
+    const productGrid = document.querySelector(".row");
+
+    sortSelect.addEventListener("change", () => {
+      const selectedOption = sortSelect.value;
+      const productCards = Array.from(productGrid.children);
+
+      const sortedCards = productCards.sort((a, b) => {
+        const badgeA = a.querySelector(".badge")?.textContent.trim().toLowerCase() || "";
+        const badgeB = b.querySelector(".badge")?.textContent.trim().toLowerCase() || "";
+
+        const priceA = parseFloat(a.querySelector(".product-details span")?.textContent.replace("$", "")) || 0;
+        const priceB = parseFloat(b.querySelector(".product-details span")?.textContent.replace("$", "")) || 0;
+
+        const ratingCountA = parseInt(a.querySelector(".rating-count")?.textContent.replace(/[()]/g, "")) || 0;
+        const ratingCountB = parseInt(b.querySelector(".rating-count")?.textContent.replace(/[()]/g, "")) || 0;
+
+        // Extract discount number (e.g., "50% OFF" -> 50)
+        const discountA = /(\d+)%\s*off/.test(badgeA) ? parseInt(RegExp.$1) : 0;
+        const discountB = /(\d+)%\s*off/.test(badgeB) ? parseInt(RegExp.$1) : 0;
+
+        switch (selectedOption) {
+          case "popularity":
+          case "ratings":
+            return ratingCountB - ratingCountA;
+
+          case "price-low":
+            return priceA - priceB;
+
+          case "newest":
+            const isNewA = badgeA === "new" ? 1 : 0;
+            const isNewB = badgeB === "new" ? 1 : 0;
+            return isNewB - isNewA;
+
+          case "discount":
+            return discountB - discountA;
+
+          default:
+            return 0;
+        }
+      });
+
+      // Re-render the sorted cards
+      productGrid.innerHTML = "";
+      sortedCards.forEach(card => productGrid.appendChild(card));
+    });
+  });
+
+  // Back to top button functionality 
+  const backToTopButton = document.getElementById('backToTop');
+  
+  if (backToTopButton) {
+    // Show/hide the button based on scroll position
+    window.addEventListener('scroll', function() {
+      if (window.pageYOffset > 300) {
+        backToTopButton.classList.add('visible');
+      } else {
+        backToTopButton.classList.remove('visible');
+      }
+    });
+    
+    // Smooth scroll to top when clicked
+    backToTopButton.addEventListener('click', function() {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    });
+  }
+
+  //Search Filter Funcitonality
+  document.addEventListener("DOMContentLoaded", () => {
+  const searchInput = document.getElementById('searchInput');
+  const clearBtn = document.getElementById('clearSearch');
+  const productCards = document.querySelectorAll('.product-card');
+  const heroCarousel = document.getElementById('heroCarousel');
+
+  function filterProducts() {
+    const query = searchInput.value.trim().toLowerCase();
+    let anyVisible = false;
+
+    productCards.forEach(card => {
+      const name = card.querySelector('.product-name')?.textContent.toLowerCase();
+      const match = name.includes(query);
+      card.parentElement.style.display = match ? 'block' : 'none';
+      if (match) anyVisible = true;
+    });
+
+    heroCarousel.style.display = query ? 'none' : 'block';
+    clearBtn.style.display = query ? 'block' : 'none';
+  }
+
+  // Filter as user types
+  searchInput.addEventListener('input', filterProducts);
+
+  // Clear button functionality
+  clearBtn.addEventListener('click', () => {
+    searchInput.value = '';
+    filterProducts();
+  });
+
+  // Optional: handle Escape key to clear
+  searchInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      searchInput.value = '';
+      filterProducts();
+    }
+  });
+});
+
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
